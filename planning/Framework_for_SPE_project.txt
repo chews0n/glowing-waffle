@@ -1,7 +1,7 @@
 Framework for SPE project
 
 1. Create an ANN or Response Surface for designing/optimizing a frack job
-- we will choose one
+- we will choose one after lit review
 
 2. Include uncertainty in the model - ie. multiple realizations - give a probabilistic estimate
 
@@ -9,16 +9,39 @@ Framework for SPE project
 - fluid + completions + rock
 - 
 
+4. Input
+    - frack type
+    - tonnage per meter
+    - length of well
+    - stage spacing
+    - lat/long/depth
+        - uncertainty analysis around this
+    - initial flow backs
+        - feature creation based on the flow back data
+        - rate of flow back / waiting time --> how to quantify uncertainty and the effect on end production
+        - % of cumulative fluid pumped based on the amount flowed back
+    - rock props
+        - uncertain in the play
+    - frack fluid
+        - viscosity
+
 4. Outputs to look at?
+- IP 90
+- IP 180
+- Cumulatives after 12-18 months
+- Lit review: CGR?
 
 5. git repository:
 
 https://github.com/chews0n/glowing-waffle
 
 6. start with a small lit review
+-
 
 7. Data? -> grab something from AccuMap or otherwise? 
 - Dependant on features
+- Keep it to the last four years
+- Ensure variability in the data, but not too unrealistic for current frack jobs
 
 8. validation -> either compare to a simulator or use another data set that wasn't used in training or both 
 
