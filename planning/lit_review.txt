@@ -1,0 +1,8 @@
+Papers
+
+1. Response Surface: https://onepetro.org/SJ/article/22/06/2012/206190/An-Iterative-Response-Surface-Methodology-by-Use 
+
+2. Data Driven Proxy: https://www.sciencedirect.com/science/article/abs/pii/S1875510015300020
+
+3. ANN: https://onepetro.org/SPEHEES/proceedings-abstract/01HEES/All-01HEES/SPE-68593-MS/133267
+

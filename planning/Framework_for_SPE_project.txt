@@ -1,0 +1,25 @@
+Framework for SPE project
+
+1. Create an ANN or Response Surface for designing/optimizing a frack job
+- we will choose one
+
+2. Include uncertainty in the model - ie. multiple realizations - give a probabilistic estimate
+
+3. What features to look at?
+- fluid + completions + rock
+- 
+
+4. Outputs to look at?
+
+5. git repository:
+
+https://github.com/chews0n/glowing-waffle
+
+6. start with a small lit review
+
+7. Data? -> grab something from AccuMap or otherwise? 
+- Dependant on features
+
+8. validation -> either compare to a simulator or use another data set that wasn't used in training or both 
+
+8. End Product should be somewhat universal -> probably require retraining for different plays (eg. marcellus vs bakken vs montney)
