@@ -47,4 +47,4 @@ https://github.com/chews0n/glowing-waffle
 
 8. End Product should be somewhat universal -> probably require retraining for different plays (eg. marcellus vs bakken vs montney)
 
-** test change
+** test change for auth
