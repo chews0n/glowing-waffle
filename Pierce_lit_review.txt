@@ -1,4 +1,4 @@
-SPE 189823 ML Applied to Optimize Duvernay Well Performance
+SPE    189823 ML Applied to Optimize Duvernay Well Performance
 
 Goal: Optimize Completions and Well Design
 Models: Multiple Linear Regression and Neural Network
