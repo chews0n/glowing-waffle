@@ -1,0 +1,103 @@
+SPE 189823 ML Applied to Optimize Duvernay Well Performance
+
+Goal: Optimize Completions and Well Design
+Models: Multiple Linear Regression and Neural Network
+Sample Size: 262 Duvernay Wells - Dry Gas to Volatile Oil 10x10 townships
+	12 months of public production
+	Mapped initial condensate yield <500 bbl/MMcf -> gas rate used as an indication of relative performance
+Model: Able to predict 78% of variance in well performance on 52 well test set
+
+Target Variable: Cumulative Volume on individual well compared to the cumulative volume of a type curve
+for the length of producing time of the individual well. Type curve calculated to methodology in SPE-174784
+(ML as a Reliable Technology for Evaluating Time-Rate Performance of Unconventional Wells)
+	Cumulative gas of well / cumulative volume of type curve
+
+Optimized Models on R2
+
+21 Predictor Variables (8 variables eliminated by P value during MLR)
+	Initial Condensate Yield
+	Azimuth
+	Total Proppant
+	Total Fluid Pumped
+	Stages Successful
+	Completed Length
+	Hybrid Frac %
+	Plug and Perf (Y/N)
+	Avg Pump Rate
+	% Resin
+	%Ceramic
+	% 100 Mesh
+	Max Prop Conc
+	Avg Perf Clusters
+	Acid Volume Pumped
+	Stand Alone (No wells closer than 800m)
+	Infill Well (Drilled after well <800m)
+	Interior Well
+	Well Spacing (Closest well distance)
+	TVD
+	Extreme Completion Problem (Unable to mill out well)
+
+
+Conclusions No benefit from:
+	 ceramic or resin coated proppant
+	Hybrid Fluid Systems
+	Placing wells on azimuth
+Total Tonnage Key driver
+
+
+
+SPE-200019-MS - Machine Learning Interpretability Application to Optimize Completion in Montney
+
+Goal: Robust predictive model capturing all the effective operational well parameters optimizing 12 months
+cumulative of equivalent well production
+
+Models: Random Forest
+
+Additional Study: ICE and PDP
+
+Sample: 2636 publicly available wells,
+		1838 hydraulically fractured wells (2008-2019 Montney)
+		Split wells into oil or gas
+		5 Subtypes: gas, oil, Ante Creek North, Kakwa & All
+
+Target Variable: 12 months cumulative BOE
+
+Input Variables:
+Location Feature: Bottom Hole Latitude, Bottom Hole Longitude , TVD, Field Name, Pool Name, Formation,
+Producing Zone, Mode, Fluid
+
+Operational Feature: Start Date, Stimulated Length, Total Stages, Total Proppants, Total Fluid, Total Water, Total CO2,
+Total Acid, Total N2, Proppant/Stage, Proppant/Length, Fluid/Stage, Fluid/Length, Casing Type, Average Spacing,
+Total Cluster Count, Median Formation Break Pressure, Median Injection Rate, Median Pressure Rate, Median ISIP,
+
+Workflow:
+	Remove Outliers
+	Expletory Data Analysis
+
+Conclusions: Wells could have achieved over $1 Million extra profit
+
+
+
+
+
+SPE-196089-MS The Importance on Integrating Subsurface Disciplines with Machine Learning when Predicting and Optimizing
+Well Performance -Case Study from the Spirit River Formation
+
+Goal: Predict 12 month cum gas in Spirit River Formation
+
+Models: Random Forest and gradient boosted trees
+
+Sample: 906 Wells
+
+Target Variable:  12 month cumulative gas production (normalized for downtime)
+
+Input Variable: Started with 101 features
+
+Final Model:
+Well Location: TVD,
+Offset Drainage: Gas production from same zone within 1600m radii of the well
+Subsurface Information: Geologic Zone, Gross Pay, Net to Gross, Volume of shale, Porosity, Water Saturation,
+ Hydrocarbon Pore Volume at 40% Shale & 3% porosity, Percentage Over & Under Pressure, iC4/nC4 Ratio
+Completion Information: Stage Spacing, Proppant Concentration (t/m3), Total Proppant Intensity (t/m), Completed Length
+
+Conclusion: 13 features in this case study combination of geological, reservoir and completion
