@@ -1,0 +1,23 @@
+Paper 3: Efficient Use of Data Analytics in Optimization of Hydraulic Fracturing in Unconventional Reservoirs
+
+Notes:
+- RSM is a compromise between cost and time compared to other models
+- Focus' primarily on the physics of the fractures
+- Utilized a commercial simulator to provide a response surface on the effects of the variable
+- Importance of features is below
+
+Inputs:
+- Fracture Half Length (2)
+- Litfetime PI ratio (1)
+- Fracture Height (6) 
+- Fracture Top (4)
+- Fracture Bottom (3)
+- Payzone Coverage Ratio (7)
+- Average Fracture Conductivity (9)
+- Average Propant Concentration (10)
+- Slurry Volume (8)
+- Praoppant Total (5)
+
+Outputs:
+- Cummulative Production
+
