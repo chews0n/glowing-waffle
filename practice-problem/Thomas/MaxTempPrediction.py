@@ -33,9 +33,9 @@ display(HTML("<style>.container { width:65% !important; }</style>"))
 
 print('libraries loaded')
 # read in csv files
-df_2019 = pd.read_csv('en_climate_daily_AB_3031094_2019_P1D.csv')
-df_2020 = pd.read_csv('en_climate_daily_AB_3031094_2020_P1D.csv')
-df_2021 = pd.read_csv('en_climate_daily_AB_3031094_2021_P1D.csv')
+df_2019 = pd.read_csv('../calgary_weather_data/en_climate_daily_AB_3031094_2019_P1D.csv')
+df_2020 = pd.read_csv('../calgary_weather_data/en_climate_daily_AB_3031094_2020_P1D.csv')
+df_2021 = pd.read_csv('../calgary_weather_data/en_climate_daily_AB_3031094_2021_P1D.csv')
 
 print('dfs loaded')
 
