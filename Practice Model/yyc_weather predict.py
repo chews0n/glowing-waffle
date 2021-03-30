@@ -84,7 +84,7 @@ y_pred = sc_y.inverse_transform(regressor.predict(sc_x.transform(x_test)))
 # Evaluating the Model Performance
 from sklearn.metrics import r2_score, mean_absolute_error
 error = mean_absolute_error(y_test, y_pred)
-print('Accuracy:', round(error, 2))
+print('Error:', round(error, 2))
 r2 = r2_score(y_test, y_pred)
 print('R2:', round(r2, 2))
 
