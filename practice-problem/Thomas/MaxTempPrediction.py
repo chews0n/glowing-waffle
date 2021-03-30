@@ -110,7 +110,7 @@ df_miss_temp = df[df['Max Temp (°C)'].isna()]
 
 df_miss_temp
 
-df_miss_temp.describe(include = 'all')
+df_miss_temp.describe(include = 'all', datetime_is_numeric=True)
 
 # plot all dates vs temp
 import plotly.io as pio
