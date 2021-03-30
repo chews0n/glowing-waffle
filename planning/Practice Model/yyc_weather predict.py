@@ -116,4 +116,6 @@ plt.gca().xaxis.set_major_locator(mdates.DayLocator((1,15)))
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 plt.setp(plt.gca().get_xticklabels(), rotation=60, ha="right")
 plt.legend()
-plt.xlabel('Date'); plt.ylabel('Maximum Temperature (C)'); plt.title('Actual and Predicted Values');
+plt.xlabel('Date') 
+plt.ylabel('Maximum Temperature (C)')
+plt.title('Actual and Predicted Values')
