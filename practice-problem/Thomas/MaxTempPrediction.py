@@ -4,16 +4,13 @@ import shap
 import numpy as np
 import sys
 from plotly.offline import init_notebook_mode
-import plotly.io as pio
 from IPython.core.display import display, HTML
-import plotly.io as pio
 import plotly.express as px
 from catboost import CatBoostRegressor
 import math
 from sklearn.metrics import mean_absolute_error
 import plotly.graph_objs as go
-
-pio.renderers.default = "browser"
+import plotly.io as pio
 
 pd.set_option('display.max_columns', None)
 
@@ -114,7 +111,7 @@ df_miss_temp
 df_miss_temp.describe(include = 'all', datetime_is_numeric=True)
 
 # plot all dates vs temp
-
+pio.renderers.default = "browser"
 data = df
 
 fig = px.line(data, x="Date/Time", y="Max Temp (°C)")
