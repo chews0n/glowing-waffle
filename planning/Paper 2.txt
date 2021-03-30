@@ -1,0 +1,37 @@
+Paper 2 - Insights to fracture stimulation design in unconventional reservoirs based onmachine learning modeling
+
+Notes:
+- Western Canada Sed Basin - Montney
+- Important to state geological properties, something that has been overlooked in many earlier studies
+- Fewer,most important parameters are necessary
+- Model's are a critical,difficult taskin choosing.
+	- SVM good for small datasets
+	- RF require more datasets, but will be more robust
+	- NN require large amounts of data to work and is tedious/time consuming
+- Focusing on first year well production with stimulation design
+- Used a database from geoLogic Systems
+- Had limited access to the geological properties of the formation (permeability, porosity, resevoir pressure, initial water, geothermal gradient)
+- Relied on data sccessible (well location, lat/long, TVD) to indirectly represent geological differences
+
+
+Inputs:
+- Lat (deg)
+- Long (deg)
+- TVD (m)
+- Lat Length (m)
+- Well Completion Type (cased hole/open hole)
+- Well Bore direction (E/W, NE/SW, N/S, NW/SE)
+- Total Proppant (ton)
+- Total Fracturing Fluid (m3)
+- Fracture Stages
+- Use of interval Clusters
+- 12 month BOE (mbo)
+
+Outputs:
+- 12 month BOE (mbo)
+
+Model:
+- Random Forest (RF) - Performed the best
+- Adaptive Boosting (AdBoost)
+- Support Vector Machine (SVM)
+- Neural Networks (NN)

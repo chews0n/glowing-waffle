@@ -1,0 +1,56 @@
+Paper 1: Data-driven model for hydraulic fracturing design optimization: 
+focus on building digital database and production forecas
+
+Notes:
+- Problem --> What is the optimum set of fracturing design parameters, which for a given set of resevoir characterization-well parameters yield an optimum pos-fracturing production?
+- Recommendations expected form the study:
+	- Oil production  forecast based on the welland the resevoir layer
+	- Optimum frac design
+	- Data aquisition systems
+- Linear models and ANN's sensitive to sparse data. ANN prone to overfitting
+- Decision trees are not as senstive to sparse/field data
+- SVM'shave large list of parameters and are prone to over-fitting
+- Paper mentionshow multiple other studies have used small data samples so their needs to be more testing to determine if the models are predictive
+- Overfitting a realproblem in the process
+- Overfitting - negative phenomenon that occurs when the learning algorithm generates a model that provides predictions mimicking a training dataset too accurately, but have very innaccurate data on test data
+	- Occam Razor: The models include more terms and variables than necessary. (ie.More complex than necessary)
+	- Small datasets
+	- Too many parameters --> choose parameters based on test set performance
+	- Bad statistics (ie. known confidence)
+	- Incorrect target variable or incorrect representations (ie. inputs already contain target variable)
+	- Human-loop (ie. Human error as we make the decision to design)
+	- Bad/irrelevant data
+	- Review - ie.only using one data source leading to a narrow view
+- Example form other study: 289 wells vs 178 features. The number of data points it to smallfor the number of features, so a sufficienlty complex model will just remmeber the dataset and not provide predictions
+- Tree based modelsfor identifying features of zero importance
+	- Boruta Method
+	- Sobol Method
+	- OVAT - Used in the paper, not for identifying feature importance but for target value sensitivity to variation
+- CatBoost performed the best with 35-50 inputs
+	- R2 of 0.815
+
+Inputs --> Resevoir, well/geomechanics, and frac job design
+- 35-50 inputs. These were the most important
+	- Number of stages
+	- Propant mass per meter of perforated interval
+	- Volume of injected fluid
+	- Resevoir Net Pay
+	- Perforation TVD
+	- Perf angle
+	- Geological Facies Type
+	- Resevoir Layer
+	- Perf Interval
+	- Permeability
+
+Outputs --> Production
+- 16 outputs
+	- Cum Prod 3 and 18 month most important
+
+Models:
+- SVM - negative R2
+- KNN
+- ANN - negative R2
+- Decision Trees
+- Ensembles based on Decision Trees
+	- CatBoost - performed the best
+
