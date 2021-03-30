@@ -1,1 +1,85 @@
-# glowing-waffle
+# Glowing Waffle
+
+## Introduction
+This project is an undertaking for the 2021 SPE Calgary Data Science Mentorship Program. The following people were involved in this project:
+
+- Chris Hewson - Resfrac
+- Harrison Wood - Pason
+- Xin Zhang - Cenovus
+- Pierce Anderson - ARC Resources
+- Brendan Danyluik - CalFrac Well Services
+- Thomas Moore - Crescent Point Energy
+
+The goal of this project was to create model that accurately predicts production values from Montney Basin wells, given a certain fracture design.
+
+## Install
+This project requires [Python 3](https://www.python.org/) and the following Python Libraries:
+
+- [NumPy](https://numpy.org/)
+- [Pandas](https://pandas.pydata.org/)
+- [matplotlib](https://matplotlib.org/)
+- [scikit-learn](https://scikit-learn.org/stable/)
+- [six](https://pypi.org/project/six/)
+- [CatBoost](https://catboost.ai/docs/installation/python-installation-method-pip-install.html#python-installation-method-pip-install)
+
+All of these can be installed from the requirements.txt file in the repository.
+
+## Usage
+Short blurb on how to use the software and expected outputs.
+
+## Model
+Using a random forest model implemented in the CatBoost library, we will gather the necessary features and targets from public petroleum data sources for the Montney (using SQL/REST calls). 
+
+Additionally, uncertainty should be either universally assigned or as a user input in order to determine the confidence interval that we have for the output from the model as the model is only as useful as the data that it is given.
+
+Once the model is trained, we will test the accuracy and predictability of the model using both a subset of the data that we have set aside and in comparison to a reservoir and fracture simulator. This will give us a good idea of the dependability of the model that has been created.
+
+## Data
+Publicly available production and well data was used for the Montney Basin in order to accurately train the model. This choice was made in order for the model to have wide applicability throughout the oil and gas industry.
+
+### Features
+This is a working list of features and will be modified as the project evolves:
+
+#### Frac Design
+
+1. Proppant per metre (or per stage)
+2. Total Fluid
+3. Fluid per metre (or per stage)
+4. Total Proppant
+5. Proppant concentration (max, or average?)
+6. Average injection rate
+7. Average treating pressure
+8. Average frac gradient
+9. Energizer (N2, CO2)
+10. Frac type
+11. Tonnage per meter
+12. Frac fluid - type and composition (if available)
+
+NB: Averages can skew the data significantly, make sure that you're using the right average
+
+#### Well Design
+
+1. Length of well
+2. Stage spacing
+    1. Cluster spacing and shots per cluster
+3. Latitude, longitude and depth/TVD
+4. Parent-Child effects - ie. distance from parent well
+
+#### Geology
+
+1. Initial flow back
+2. Rate of Flow Back
+3. Leak off rate
+4. Rock properties (perm, poro, stresses)
+5. Reservoir Pressure
+6. Saturations 
+
+### Targets
+
+This is a working list of features and will be modified as the project evolves:
+
+1. Initial Production in the first 90 days (IP90)
+2. Initial Production in the first 180 days (IP180)
+
+## License
+Glowing Waffle is licensed under the Apache License, Version 2.0. See LICENSE for the full license text.
