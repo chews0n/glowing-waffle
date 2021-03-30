@@ -1,34 +1,38 @@
 import pandas as pd
+from catboost import Pool
+import shap
+import numpy as np
+import sys
+from plotly.offline import init_notebook_mode
+import plotly.io as pio
+from IPython.core.display import display, HTML
+import plotly.io as pio
+import plotly.express as px
+from catboost import CatBoostRegressor
+import math
+from sklearn.metrics import mean_absolute_error
+import plotly.graph_objs as go
+
+pio.renderers.default = "browser"
+
 pd.set_option('display.max_columns', None)
 
-import numpy as np 
+
 
 np.set_printoptions(precision=3)
 
 #shows all entries in an array
-import sys
+
 np.set_printoptions(threshold=sys.maxsize)
 
-import math
-
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm # for adding colors to plots
-
-import seaborn as sns
-
-import datetime as dt
-
-from datetime import datetime
-
 # Plotly
-import plotly.graph_objs as go
-from plotly.offline import iplot, plot, init_notebook_mode
+
 init_notebook_mode(connected=True)
 
-import plotly.io as pio
+
 pio.renderers.default = "svg"
 
-from IPython.core.display import display, HTML
+
 display(HTML("<style>.container { width:65% !important; }</style>"))
 
 print('libraries loaded')
@@ -78,9 +82,6 @@ df.groupby(by = 'Dir of Max Gust Flag').count()
 
 df.dtypes
 
-from datetime import date
-
-
 df['Date/Time'] = pd.to_datetime(arg = df['Date/Time'], format = '%Y-%m-%d')
 
 df['Date/Time'].dtypes
@@ -113,10 +114,6 @@ df_miss_temp
 df_miss_temp.describe(include = 'all', datetime_is_numeric=True)
 
 # plot all dates vs temp
-import plotly.io as pio
-import plotly.express as px
-
-pio.renderers.default = "browser"
 
 data = df
 
@@ -155,8 +152,6 @@ missing_data = pd.concat([total, percent], axis=1, keys=['Total_count', 'Percent
 missing_data
 
 # deal with blanks by taking average of prev 2 days and next 2 days
-
-import math
 
 for i in range(0, len(df) - 1, 1):
 
@@ -324,9 +319,6 @@ X_2021_test['model_error'] = np.abs(y_2021 - X_2021_test['average'])
 
 print('Baseline Absolute Error :', np.round(X_2021_test['model_error'].mean(),1), 'degrees C')
 
-from catboost import CatBoostRegressor
-
-
 # set up model, initially tried 100 iterations but found 25 was enough
 
 cboost = CatBoostRegressor(iterations=25,
@@ -336,8 +328,6 @@ cboost = CatBoostRegressor(iterations=25,
                           )
 
 cboost.fit(X,y, plot =True, eval_set=(X_2021,y_2021))
-
-from sklearn.metrics import mean_absolute_error
 
 # predict 2021 temperatures
 y_pred = cboost.predict(X_2021)
@@ -361,7 +351,6 @@ compare_df['CatBoost_Predictions'] = y_pred
 compare_df.head()
 
 # plot all dates vs temp
-import plotly.graph_objs as go
 
 fig = go.Figure()
 
@@ -383,9 +372,6 @@ fig.update_layout(width = 1200,
                  yaxis_title = "Temperature (deg C)")
 
 fig.show()
-
-from catboost import Pool
-import shap
 
 cat_pool = Pool(X,label = y)
 
