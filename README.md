@@ -5,7 +5,6 @@ This project is an undertaking for the 2021 SPE Calgary Data Science Mentorship 
 
 - Chris Hewson - Resfrac
 - Harrison Wood - Pason
-- Xin Zhang - Cenovus
 - Pierce Anderson - ARC Resources
 - Brendan Danyluik - CalFrac Well Services
 - Thomas Moore - Crescent Point Energy
