@@ -72,9 +72,9 @@ def SplitFeatureTarget(x,y):
     return (FeaturesArray,TargetArray)
 
 #define file paths for each year
-path2019 = 'calgary_weather_data\en_climate_daily_AB_3031094_2019_P1D.csv'
-path2020 = 'calgary_weather_data\en_climate_daily_AB_3031094_2020_P1D.csv'
-path2021 = 'calgary_weather_data\en_climate_daily_AB_3031094_2021_P1D.csv'
+path2019 = '../calgary_weather_data/en_climate_daily_AB_3031094_2019_P1D.csv'
+path2020 = '../calgary_weather_data/en_climate_daily_AB_3031094_2020_P1D.csv'
+path2021 = '../calgary_weather_data/en_climate_daily_AB_3031094_2021_P1D.csv'
 
 #Create Data Frame for training data
 df = CleanWeatherData(path2019,path2020)
