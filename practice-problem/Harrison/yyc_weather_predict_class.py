@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 import sys
-import fileinput
 
 # Importing the datasets
 
@@ -28,10 +27,6 @@ class weatherData:
 
         for filename in self.files:
             dfs.append(pd.read_csv(filename))
-
-        df_2019 = pd.read_csv('../calgary_weather_data/en_climate_daily_AB_3031094_2019_P1D.csv')
-        df_2020 = pd.read_csv('../calgary_weather_data/en_climate_daily_AB_3031094_2020_P1D.csv')
-        df_2021 = pd.read_csv('../calgary_weather_data/en_climate_daily_AB_3031094_2021_P1D.csv')
 
         df = pd.concat(dfs, keys=["x", "y", "z"])
 
