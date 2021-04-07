@@ -30,6 +30,7 @@ class weatherData:
 
         df = pd.concat(dfs, keys=["x", "y", "z"])
 
+        #this is a change
         # Remove any rows where Max Temp = NaN
         # NaN's are removed as making a prediction for
         df = df.dropna(subset = ['Max Temp (°C)'])
