@@ -23,6 +23,10 @@ This project requires [Python 3](https://www.python.org/) and the following Pyth
 
 All of these can be installed from the requirements.txt file in the repository.
 
+To install the package, run the setup.py file, python 3.5 and above is required
+
+    python setup.py install
+
 ## Usage
 Short blurb on how to use the software and expected outputs.
 
