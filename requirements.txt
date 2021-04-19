@@ -5,3 +5,5 @@ catboost
 sklearn
 datetime
 matplotlib
+requests
+re
