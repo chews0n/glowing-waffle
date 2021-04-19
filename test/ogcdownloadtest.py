@@ -17,7 +17,7 @@ OGC_FRAC_HEADERS = ['Fracture Date', 'WA Number', 'Well Area Name', 'Operator', 
                     'Ingredient Concentration in HF Fluid % by Mass', 'Ingredient Percentage in Additive by % Mass',
                     'Total Water Volume (m^3)']
 
-# In the hydraulic_fracture_csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
+# In the perf_csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
 OGC_PERF_HEADERS = ['WA NUM', 'DRILLNG EVENT', 'COMPLTN EVENT', 'UWI', 'WELL NAME', 'COMPLTN DATE',
                     'COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'COMPLTN TYPE', 'COMPLETION WORKOVER KEY',
                     'FRAC SUMMARY KEY', 'PERF STAGE NUM', 'CHARGE TYPE', 'CHARGE SIZE (g)', 'SHOTS PER METER',
@@ -39,12 +39,12 @@ OGC_HYDRAULIC_FRACTURE_HEADERS = ['WA NUM', 'DRILLNG EVENT', 'COMPLTN EVENT', 'U
                                   'PROPPANT TYPE3 PUMPED (t)', 'PROPPANT TYPE3 PLACED (t)', 'PROPPANT TYPE4',
                                   'PROPPANT TYPE4 PUMPED (t)', 'PROPPANT TYPE4 PLACED (t)']
 
-# In the hydraulic_fracture_csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
+# In the perf_net_interval.csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
 OGC_PERF_NET_HEADERS = ['WA NUM', 'DRILLNG EVENT', 'COMPLTN EVENT', 'UWI', 'WELL NAME', 'COMPLTN DATE',
                         'COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'COMPLTN TYPE', 'COMPLETION WORKOVER KEY',
                         'FRAC SUMMARY KEY', 'PERF STAGE NUM', 'INTERVAL TOP DEPTH (m)', 'INTERVAL BASE DEPTH (m)']
 
-# In the drill_csv file -- https://iris.bcogc.ca/download/drill_csv.zip
+# In the wells file -- https://iris.bcogc.ca/download/drill_csv.zip
 OGC_WELLS_HEADERS = ['Well Surf Loc', 'Well Name', 'WA Num', 'Surf Nad27 Lat', 'Surf Nad27 Long', 'Surf Nad83 Lat',
                      'Surf Nad83 Long', 'Surf UTM Zone Num', 'Surf UTM83 Northng', 'Surf UTM83 Eastng', 'Surf North',
                      'Surf East', 'Surf Owner', 'Ground Elevtn', 'Directional Flag', 'Surf Ref Corner', 'Surf Ref Unit',
@@ -53,6 +53,15 @@ OGC_WELLS_HEADERS = ['Well Surf Loc', 'Well Name', 'WA Num', 'Surf Nad27 Lat', '
                      'Surf Qtr Unit', 'Surf NTS Exception', 'Surf Unit', 'Surf Block', 'Surf Map', 'Oper Id',
                      'Oper Abbrev', 'Oper Abbrev2', 'Optnl Unit', 'Well Area Name', 'Well Name Date',
                      'Special Well Class Code', 'Test Hole']
+
+# In the dst file -- https://iris.bcogc.ca/download/drill_csv.zip
+OGC_DST_HEADERS = ['UWI', 'Area_code', 'Formtn_code', 'Pool_seq', 'Wa_num', 'Drillng_event_seq', 'Top_intrvl_depth (m)',
+                   'Dst_num', 'Dst_Type', 'Base_intrvl_depth (m)', 'Init_hydro_press', 'Init_shutin_press',
+                   'Init_shutin_time', 'Main_flow_init_press', 'Preflw_time', 'Preflw_start_press', 'Preflw_end_press',
+                   'Preflw_gas_to_surf', 'Final_hydro_press', 'Final_shutin_press', 'Final_shutin_time',
+                   'Main_flow_final_press', 'Main_valve_open_time', 'Main_flow_gas_to_surf', 'Dst_remarks',
+                   'Init_extrpltd_press', 'Final_extrpltd_press', 'Misrun_flag', 'Skin', 'Permblty', 'Run_temp (c)',
+                   'Detail_anlyss_flag', 'Flow_recvry_remarks', 'Dst_date', 'Project_code']
 
 if __name__ == "__main__":
     # Download the files from the OGC website
