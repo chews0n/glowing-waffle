@@ -2,8 +2,8 @@ import pandas as pd
 import os
 import sys
 
-class readData:
 
+class ReadData:
 
     def __init__(self):
 
@@ -13,14 +13,14 @@ class readData:
         self.featureDf = None
         self.outputDf = None
 
-    def readCSVFolder(self, folder=None):
-        '''
+    def readcsvfolder(self, folder=None):
+        """
         Read in the csv data and concatinate it into a pandas object
         Parameters
         ----------
         folder: string , required (default=None)
                 The absolute or relative path to the folder that you want to search in for csv files
-        '''
+        """
 
         # read in the files in the folder, this will be best in case you need to do something with the files later
         # instead of reading them directly into a pandas array, reads in all file types
@@ -37,8 +37,8 @@ class readData:
 
         self.df = pd.concat(self.pdarray)
 
-    def cleanData(self, columns_to_drop=None):
-        '''
+    def cleandata(self, columns_to_drop=None):
+        """
         Clean the data in the data array and remove the NaN values
 
         Parameters
@@ -48,16 +48,17 @@ class readData:
         Returns
         -------
         None
-        '''
+        """
         # Drop columns that are not part of the feature list
         self.df = self.df.drop(columns=columns_to_drop, axis=1)
 
         # Drop only completely empty rows
-        # TODO: Create additional clean functions in case you need partial data from rows or want to set certain NaN values to a number
+        # TODO: Create additional clean functions in case you need partial data from rows or want to set certain
+        #  NaN values to a number
         self.df = self.df.dropna(how='all')
 
-    def splitFeaturesAndOutputs(self, output_list=None):
-        '''
+    def splitfeaturesandoutputs(self, output_list=None):
+        """
         Split the data frame into features and outputs in order to train and or test the model. This assumes that the
         df variable only contains features and outputs
         Parameters
@@ -67,7 +68,7 @@ class readData:
         Returns
         -------
         None
-        '''
+        """
 
         self.featureDf = self.df.drop(columns=output_list, axis=1)
         self.outputDf = self.df[output_list]
