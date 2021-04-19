@@ -41,6 +41,7 @@ class scrapeOGC:
 
             try:
                 # Perform a GET request for the files listed in the URLS in the urls list
+                print(f"Downloading file #{idx + 1} of {len(self.urls)} with url: {dlurls}")
                 response = requests.get(dlurls, allow_redirects=True)
 
                 # If the response was successful, no Exception will be raised
@@ -69,3 +70,5 @@ class scrapeOGC:
 
                 # save the filename to the list of the OGCData option
                 self.filenames.append(outputfilename)
+
+        print("Finished Downloading the files from OGC")
