@@ -25,19 +25,19 @@ class ScrapeOGC:
                 sys.exit(f'Error Occured creating directory: {err}')
 
     def downloaddataurl(self):
-        '''
+        """
         Download the CSV data from the URLS given in the list of URLS, while we are currently using this for
         the data from the Oil and Gas Council of BC, this can be extended to any file that has a URL, including
         none CSV data. If no folder supplied, the file will be downloaded to the Current Working Directory
 
         Parameters
         ----------
-        None
+        self
 
         Returns
         -------
         None
-        '''
+        """
         # loop over the requested urls to download the files to the computer
         for idx, dlurls in enumerate(self.urls):
 
@@ -82,17 +82,17 @@ class ScrapeOGC:
         self.unzipFolders()
 
     def unzipFolders(self):
-        '''
+        """
         Extract zip files if they were downloaded during the scraping from the OGC Website
 
         Parameters
         ----------
-        None
+        self
 
         Returns
         -------
         None
-        '''
+        """
         # Loop through all of the downloaded files from OGC
         for idx, files in enumerate(self.filenames):
             # Check if the file is in fact a zip file
