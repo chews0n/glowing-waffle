@@ -4,6 +4,7 @@ import re
 import sys
 import os
 
+#TODO: Extend this also to the AER, maybe??
 
 class scrapeOGC:
 
