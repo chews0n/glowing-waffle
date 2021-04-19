@@ -3,6 +3,7 @@ from requests.exceptions import HTTPError
 import re
 import sys
 import os
+import zipfile
 
 
 # TODO: Extend this also to the AER, maybe??
@@ -54,7 +55,10 @@ class ScrapeOGC:
             else:
                 # open the file and save it to a location
                 # this is specific to the OGC header data, so be careful when extending
-                outputfilename = re.search(r"filename=\"([^']*)\";", response.headers['Content-Disposition']).group(1)
+                if 'content-disposition' in response.headers.keys():
+                    outputfilename = re.search(r"filename=\"([^']*)\";", response.headers['Content-Disposition']).group(1)
+                else:
+                    outputfilename = dlurls.split('/')[-1]
 
                 if self.outputfolder is not None:
                     # gives the full path of the file for writing and saving
@@ -73,3 +77,28 @@ class ScrapeOGC:
                 self.filenames.append(outputfilename)
 
         print("Finished Downloading the files from OGC")
+
+    def unzipFolders(self):
+        '''
+        Extract zip files if they were downloaded during the scraping from the OGC Website
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
+        # Loop through all of the downloaded files from OGC
+        for idx, files in enumerate(self.filenames):
+            # Check if the file is in fact a zip file
+            if zipfile.is_zipfile(files):
+                zf = zipfile.ZipFile(files, 'r')
+
+                # Extract the zip file into the specified folder
+                zf.extractall(self.outputfolder)
+                zf.close()
+
+                # Delete the zip files now that we have extracted them
+                os.remove(files)

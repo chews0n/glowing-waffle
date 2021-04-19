@@ -2,7 +2,9 @@ from glowingwaffle.data import ScrapeOGC
 import sys
 
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
-            'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N']
+            'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
+            'https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip',
+            'https://iris.bcogc.ca/download/drill_csv.zip']
 
 OGC_PROD_HEADERS = ['Well Authorization Number', 'Completion Event Sequence', 'UWI', 'Zone Prod Period', 'Area Code',
                     'Formtn Code', 'Well Area Name', 'Oper Abbreviation', 'Production Days', 'Gas Production (e3m3)',
@@ -15,7 +17,45 @@ OGC_FRAC_HEADERS = ['Fracture Date', 'WA Number', 'Well Area Name', 'Operator', 
                     'Ingredient Concentration in HF Fluid % by Mass', 'Ingredient Percentage in Additive by % Mass',
                     'Total Water Volume (m^3)']
 
+# In the hydraulic_fracture_csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
+OGC_PERF_HEADERS = ['WA NUM', 'DRILLNG EVENT', 'COMPLTN EVENT', 'UWI', 'WELL NAME', 'COMPLTN DATE',
+                    'COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'COMPLTN TYPE', 'COMPLETION WORKOVER KEY',
+                    'FRAC SUMMARY KEY', 'PERF STAGE NUM', 'CHARGE TYPE', 'CHARGE SIZE (g)', 'SHOTS PER METER',
+                    'DEGREE OF PHASING', 'PERF COMMENTS']
+
+# In the hydraulic_fracture_csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
+OGC_HYDRAULIC_FRACTURE_HEADERS = ['WA NUM', 'DRILLNG EVENT', 'COMPLTN EVENT', 'UWI', 'WELL NAME', 'COMPLTN DATE',
+                                  'FRAC START TIME', 'COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'COMPLTN TYPE',
+                                  'COMPLETION WORKOVER KEY', 'FRAC SUMMARY KEY', 'FRAC STAGE NUM', 'BASE FLUID',
+                                  'VISCOSITY GEL TYPE', 'ENERGIZER', 'ENERGIZER TYPE', 'PLUG BACK TOTAL DEPTH (m)',
+                                  'ACID SPEARHEAD AMOUNT (m3)', 'ACID TYPE', 'BREAK DOWN PRESSURE (MPa)',
+                                  'INST SHUT IN PRESSURE (MPa)', 'MAX TREATING PRESSURE (MPa)',
+                                  'AVG TREATING PRESSURE (MPa)', 'AVG RATE (m3/min)', 'FRAC GRADIENT (KPa/m)',
+                                  'TOTAL FLUID PUMPED (m3)', 'TOTAL CO2 PUMPED (m3)', 'TOTAL N2 PUMPED (scm)',
+                                  'TOTAL CH4 PUMPED (e3m3)', 'RADIOACTIVE FLAG', 'RADIOACTIVE TRACER TYPE',
+                                  'CHEMICAL TRACER FLAG', 'CHEMICAL TRACER TYPE', 'PROPPANT TYPE1',
+                                  'PROPPANT TYPE1 PUMPED (t)', 'PROPPANT TYPE1 PLACED (t)', 'PROPPANT TYPE2',
+                                  'PROPPANT TYPE2 PUMPED (t)', 'PROPPANT TYPE2 PLACED (t)', 'PROPPANT TYPE3',
+                                  'PROPPANT TYPE3 PUMPED (t)', 'PROPPANT TYPE3 PLACED (t)', 'PROPPANT TYPE4',
+                                  'PROPPANT TYPE4 PUMPED (t)', 'PROPPANT TYPE4 PLACED (t)']
+
+# In the hydraulic_fracture_csv -- https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip
+OGC_PERF_NET_HEADERS = ['WA NUM', 'DRILLNG EVENT', 'COMPLTN EVENT', 'UWI', 'WELL NAME', 'COMPLTN DATE',
+                        'COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'COMPLTN TYPE', 'COMPLETION WORKOVER KEY',
+                        'FRAC SUMMARY KEY', 'PERF STAGE NUM', 'INTERVAL TOP DEPTH (m)', 'INTERVAL BASE DEPTH (m)']
+
+# In the drill_csv file -- https://iris.bcogc.ca/download/drill_csv.zip
+OGC_WELLS_HEADERS = ['Well Surf Loc', 'Well Name', 'WA Num', 'Surf Nad27 Lat', 'Surf Nad27 Long', 'Surf Nad83 Lat',
+                     'Surf Nad83 Long', 'Surf UTM Zone Num', 'Surf UTM83 Northng', 'Surf UTM83 Eastng', 'Surf North',
+                     'Surf East', 'Surf Owner', 'Ground Elevtn', 'Directional Flag', 'Surf Ref Corner', 'Surf Ref Unit',
+                     'Surf Ref Block', 'Surf Ref Map', 'Surf Ref Lsd', 'Surf Ref Sect', 'Surf Ref Twp',
+                     'Surf Ref Range', 'Surf DLS Exception', 'Surf Lsd', 'Surf Sect', 'Surf Twp', 'Surf Range',
+                     'Surf Qtr Unit', 'Surf NTS Exception', 'Surf Unit', 'Surf Block', 'Surf Map', 'Oper Id',
+                     'Oper Abbrev', 'Oper Abbrev2', 'Optnl Unit', 'Well Area Name', 'Well Name Date',
+                     'Special Well Class Code', 'Test Hole']
+
 if __name__ == "__main__":
     # Download the files from the OGC website
     ogcData = ScrapeOGC(folder=sys.argv[1], urls=OGC_URLS)
     ogcData.downloaddataurl()
+    ogcData.unzipFolders()
