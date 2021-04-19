@@ -1,7 +1,7 @@
-from .importFromCsv import *
-from .scrapeOGC import *
+from .ImportFromCsv import *
+from .ScrapeOGC import *
 
 __all__ = [
-    'readData',
-    'scrapeOGC'
+    'ReadData',
+    'ScrapeOGC'
 ]

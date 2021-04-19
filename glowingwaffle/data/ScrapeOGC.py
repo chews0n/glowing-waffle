@@ -4,9 +4,10 @@ import re
 import sys
 import os
 
-#TODO: Extend this also to the AER, maybe??
 
-class scrapeOGC:
+# TODO: Extend this also to the AER, maybe??
+
+class ScrapeOGC:
 
     def __init__(self, folder=None, urls=None):
         self.urls = list()
@@ -15,15 +16,14 @@ class scrapeOGC:
 
         self.urls = urls
 
-        if folder is not None:
-            if not os.path.exists(folder):
-                # create a folder if the folder does not currently exist
-                try:
-                    os.mkdir(folder)
-                except OSError as err:
-                    sys.exit(f'Error Occured creating directory: {err}')
+        if folder is not None and not os.path.exists(folder):
+            # create a folder if the folder does not currently exist
+            try:
+                os.mkdir(folder)
+            except OSError as err:
+                sys.exit(f'Error Occured creating directory: {err}')
 
-    def downloadDataUrl(self):
+    def downloaddataurl(self):
         '''
         Download the CSV data from the URLS given in the list of URLS, while we are currently using this for
         the data from the Oil and Gas Council of BC, this can be extended to any file that has a URL, including
@@ -64,7 +64,7 @@ class scrapeOGC:
                     f = open(outputfilename, 'wb')
                     # check if we were able to open the file
                 except OSError:
-                    sys.exit("Could not open the file: ", outputfilename)
+                    sys.exit(f"Could not open the file: {outputfilename}")
                 with f:
                     # write the content of the get request to the file that was opened
                     f.write(response.content)
