@@ -78,6 +78,9 @@ class ScrapeOGC:
 
         print("Finished Downloading the files from OGC")
 
+        print("Unzipping any Zipped downloads")
+        self.unzipFolders()
+
     def unzipFolders(self):
         '''
         Extract zip files if they were downloaded during the scraping from the OGC Website
@@ -94,6 +97,8 @@ class ScrapeOGC:
         for idx, files in enumerate(self.filenames):
             # Check if the file is in fact a zip file
             if zipfile.is_zipfile(files):
+                print(f"Unzipping {files}")
+
                 zf = zipfile.ZipFile(files, 'r')
 
                 # Extract the zip file into the specified folder

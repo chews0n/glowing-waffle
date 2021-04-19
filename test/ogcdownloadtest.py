@@ -58,4 +58,3 @@ if __name__ == "__main__":
     # Download the files from the OGC website
     ogcData = ScrapeOGC(folder=sys.argv[1], urls=OGC_URLS)
     ogcData.downloaddataurl()
-    ogcData.unzipFolders()
