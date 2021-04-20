@@ -15,7 +15,7 @@ class ReadData:
 
     def read_csv_folder(self, folder=None):
         """
-        Read in the csv data and concatinate it into a pandas object
+        Read in the csv data and concatenate it into a pandas object
         Parameters
         ----------
         folder: string , required (default=None)
@@ -63,7 +63,7 @@ class ReadData:
         df variable only contains features and outputs
         Parameters
         ----------
-        output_list: list, requried (default=None)
+        output_list: list, required (default=None)
             List of outputs to use in the model
         Returns
         -------
