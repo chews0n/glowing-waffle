@@ -8,7 +8,7 @@ class ReadData:
     def __init__(self):
 
         self.files = list()
-        self.pdarray = []
+        self.pd_array = []
         self.df = None
         self.featureDf = None
         self.outputDf = None
@@ -30,12 +30,12 @@ class ReadData:
 
         for idx, filename in enumerate(os.listdir(folder)):
             self.files.append(os.path.join(folder, filename))
-            self.pdarray.append(pd.read_csv(self.files[idx]))
+            self.pd_array.append(pd.read_csv(self.files[idx]))
 
-        if len(self.pdarray) == 0:
+        if len(self.pd_array) == 0:
             sys.exit("The folder supplied: " + folder + " does not contain any files, please revise")
 
-        self.df = pd.concat(self.pdarray)
+        self.df = pd.concat(self.pd_array)
 
     def clean_data(self, columns_to_drop=None):
         """

@@ -12,8 +12,8 @@ class ScrapeOGC:
 
     def __init__(self, folder=None, urls=None):
         self.urls = list()
-        self.filenames = list()
-        self.outputfolder = folder
+        self.file_names = list()
+        self.output_folder = folder
 
         self.urls = urls
 
@@ -61,9 +61,9 @@ class ScrapeOGC:
                 else:
                     output_filename = dlurls.split('/')[-1]
 
-                if self.outputfolder is not None:
+                if self.output_folder is not None:
                     # gives the full path of the file for writing and saving
-                    output_filename = os.path.join(self.outputfolder, output_filename)
+                    output_filename = os.path.join(self.output_folder, output_filename)
 
                 try:
                     f = open(output_filename, 'wb')
@@ -75,7 +75,7 @@ class ScrapeOGC:
                     f.write(response.content)
 
                 # save the filename to the list of the OGCData option
-                self.filenames.append(output_filename)
+                self.file_names.append(output_filename)
 
         print("Finished Downloading the files from OGC")
 
@@ -95,7 +95,7 @@ class ScrapeOGC:
         None
         """
         # Loop through all of the downloaded files from OGC
-        for idx, files in enumerate(self.filenames):
+        for idx, files in enumerate(self.file_names):
             # Check if the file is in fact a zip file
             if zipfile.is_zipfile(files):
                 print(f"Unzipping {files}")
@@ -103,7 +103,7 @@ class ScrapeOGC:
                 zf = zipfile.ZipFile(files, 'r')
 
                 # Extract the zip file into the specified folder
-                zf.extractall(self.outputfolder)
+                zf.extractall(self.output_folder)
                 zf.close()
 
                 # Delete the zip files now that we have extracted them
