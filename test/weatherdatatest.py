@@ -6,10 +6,10 @@ if __name__ == "__main__":
     trainingData = ReadData()
 
     # Pass one argument into the program which is the rel or absolute path to the csv files
-    trainingData.readcsvfolder(sys.argv[1])
+    trainingData.read_csv_folder(sys.argv[1])
 
     # clean the data and drop the columns we don't need
-    trainingData.cleandata(columns_to_drop=['Longitude (x)', 'Latitude (y)', 'Climate ID',
+    trainingData.clean_data(columns_to_drop=['Longitude (x)', 'Latitude (y)', 'Climate ID',
                                             'Station Name', 'Data Quality', 'Max Temp Flag',
                                             'Min Temp Flag', 'Mean Temp Flag', 'Heat Deg Days Flag',
                                             'Cool Deg Days Flag', 'Total Rain Flag', 'Total Snow Flag',
@@ -18,4 +18,4 @@ if __name__ == "__main__":
                                             'Heat Deg Days (°C)', 'Cool Deg Days (°C)'])
 
     # Split the features and the output data frames
-    trainingData.splitfeaturesandoutputs(output_list=['Max Temp (°C)'])
+    trainingData.split_features_and_outputs(output_list=['Max Temp (°C)'])

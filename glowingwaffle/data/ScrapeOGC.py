@@ -22,9 +22,9 @@ class ScrapeOGC:
             try:
                 os.mkdir(folder)
             except OSError as err:
-                sys.exit(f'Error Occured creating directory: {err}')
+                sys.exit(f'Error Occurred creating directory: {err}')
 
-    def downloaddataurl(self):
+    def download_data_url(self):
         """
         Download the CSV data from the URLS given in the list of URLS, while we are currently using this for
         the data from the Oil and Gas Council of BC, this can be extended to any file that has a URL, including
@@ -56,33 +56,33 @@ class ScrapeOGC:
                 # open the file and save it to a location
                 # this is specific to the OGC header data, so be careful when extending
                 if 'content-disposition' in response.headers.keys():
-                    outputfilename = re.search(r"filename=\"([^']*)\";",
-                                               response.headers['Content-Disposition']).group(1)
+                    output_filename = re.search(r"filename=\"([^']*)\";",
+                                                response.headers['Content-Disposition']).group(1)
                 else:
-                    outputfilename = dlurls.split('/')[-1]
+                    output_filename = dlurls.split('/')[-1]
 
                 if self.outputfolder is not None:
                     # gives the full path of the file for writing and saving
-                    outputfilename = os.path.join(self.outputfolder, outputfilename)
+                    output_filename = os.path.join(self.outputfolder, output_filename)
 
                 try:
-                    f = open(outputfilename, 'wb')
+                    f = open(output_filename, 'wb')
                     # check if we were able to open the file
                 except OSError:
-                    sys.exit(f"Could not open the file: {outputfilename}")
+                    sys.exit(f"Could not open the file: {output_filename}")
                 with f:
                     # write the content of the get request to the file that was opened
                     f.write(response.content)
 
                 # save the filename to the list of the OGCData option
-                self.filenames.append(outputfilename)
+                self.filenames.append(output_filename)
 
         print("Finished Downloading the files from OGC")
 
         print("Unzipping any Zipped downloads")
-        self.unzipfolders()
+        self.unzip_folders()
 
-    def unzipfolders(self):
+    def unzip_folders(self):
         """
         Extract zip files if they were downloaded during the scraping from the OGC Website
 

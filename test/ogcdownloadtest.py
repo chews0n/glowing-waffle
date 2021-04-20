@@ -66,4 +66,4 @@ OGC_DST_HEADERS = ['UWI', 'Area_code', 'Formtn_code', 'Pool_seq', 'Wa_num', 'Dri
 if __name__ == "__main__":
     # Download the files from the OGC website
     ogcData = ScrapeOGC(folder=sys.argv[1], urls=OGC_URLS)
-    ogcData.downloaddataurl()
+    ogcData.download_data_url()

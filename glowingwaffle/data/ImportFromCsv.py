@@ -13,7 +13,7 @@ class ReadData:
         self.featureDf = None
         self.outputDf = None
 
-    def readcsvfolder(self, folder=None):
+    def read_csv_folder(self, folder=None):
         """
         Read in the csv data and concatinate it into a pandas object
         Parameters
@@ -37,7 +37,7 @@ class ReadData:
 
         self.df = pd.concat(self.pdarray)
 
-    def cleandata(self, columns_to_drop=None):
+    def clean_data(self, columns_to_drop=None):
         """
         Clean the data in the data array and remove the NaN values
 
@@ -57,7 +57,7 @@ class ReadData:
         #  NaN values to a number
         self.df = self.df.dropna(how='all')
 
-    def splitfeaturesandoutputs(self, output_list=None):
+    def split_features_and_outputs(self, output_list=None):
         """
         Split the data frame into features and outputs in order to train and or test the model. This assumes that the
         df variable only contains features and outputs
