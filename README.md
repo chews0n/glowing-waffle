@@ -18,10 +18,15 @@ This project requires [Python 3](https://www.python.org/) and the following Pyth
 - [Pandas](https://pandas.pydata.org/)
 - [matplotlib](https://matplotlib.org/)
 - [scikit-learn](https://scikit-learn.org/stable/)
-- [six](https://pypi.org/project/six/)
 - [CatBoost](https://catboost.ai/docs/installation/python-installation-method-pip-install.html#python-installation-method-pip-install)
+- [datetime](https://pypi.org/project/DateTime/)
+- [requests](https://pypi.org/project/requests/)
+- [regex](https://pypi.org/project/regex/)
+- [zipfile36](https://pypi.org/project/zipfile36/)
 
-All of these can be installed from the requirements.txt file in the repository.
+All of these can be installed from the requirements.txt file in the repository using the following command:
+
+    pip install -r requirements.txt
 
 To install the package, run the setup.py file, python 3.5 and above is required
 
@@ -33,7 +38,7 @@ Short blurb on how to use the software and expected outputs.
 ## Model
 Using a random forest model implemented in the CatBoost library, we will gather the necessary features and targets from public petroleum data sources for the Montney (using SQL/REST calls). 
 
-Additionally, uncertainty should be either universally assigned or as a user input in order to determine the confidence interval that we have for the output from the model as the model is only as useful as the data that it is given.
+Uncertainty can be applied by using separate sets to train the model(s). By acquiring different models using slightly different data sets, we will be able to more quantifiably capture uncertainty and the bounds of the outputs obtained from the model(s).
 
 Once the model is trained, we will test the accuracy and predictability of the model using both a subset of the data that we have set aside and in comparison to a reservoir and fracture simulator. This will give us a good idea of the dependability of the model that has been created.
 
