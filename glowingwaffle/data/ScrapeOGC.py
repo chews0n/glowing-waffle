@@ -56,7 +56,8 @@ class ScrapeOGC:
                 # open the file and save it to a location
                 # this is specific to the OGC header data, so be careful when extending
                 if 'content-disposition' in response.headers.keys():
-                    outputfilename = re.search(r"filename=\"([^']*)\";", response.headers['Content-Disposition']).group(1)
+                    outputfilename = re.search(r"filename=\"([^']*)\";",
+                                               response.headers['Content-Disposition']).group(1)
                 else:
                     outputfilename = dlurls.split('/')[-1]
 
@@ -79,9 +80,9 @@ class ScrapeOGC:
         print("Finished Downloading the files from OGC")
 
         print("Unzipping any Zipped downloads")
-        self.unzipFolders()
+        self.unzipfolders()
 
-    def unzipFolders(self):
+    def unzipfolders(self):
         """
         Extract zip files if they were downloaded during the scraping from the OGC Website
 
