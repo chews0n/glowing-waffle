@@ -1,9 +1,9 @@
 import requests
 from requests.exceptions import HTTPError
-import re
+import regex
 import sys
 import os
-import zipfile
+import zipfile36 as zipfile
 
 
 # TODO: Extend this also to the AER, maybe??
@@ -56,8 +56,8 @@ class ScrapeOGC:
                 # open the file and save it to a location
                 # this is specific to the OGC header data, so be careful when extending
                 if 'content-disposition' in response.headers.keys():
-                    output_filename = re.search(r"filename=\"([^']*)\";",
-                                                response.headers['Content-Disposition']).group(1)
+                    output_filename = regex.search(r"filename=\"([^']*)\";",
+                                                   response.headers['Content-Disposition']).group(1)
                 else:
                     output_filename = dlurls.split('/')[-1]
 
