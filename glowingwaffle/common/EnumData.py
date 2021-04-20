@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class Features(Enum):
-    WELLLENGTH = 1
-    FLUIDPERMETER = 2
+    WELL_LENGTH = 1
+    FLUID_PER_METER = 2
 
 
 class Targets(Enum):
