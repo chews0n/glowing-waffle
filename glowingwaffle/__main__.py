@@ -5,7 +5,8 @@ from glowingwaffle.data import ReadData, ScrapeOGC
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
             'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
             'https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip',
-            'https://iris.bcogc.ca/download/drill_csv.zip']
+            'https://iris.bcogc.ca/download/drill_csv.zip',
+            'https://iris.bcogc.ca/download/prod_csv.zip']
 
 def dir_path(path):
     if os.path.isdir(path):

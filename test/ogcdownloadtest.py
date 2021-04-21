@@ -4,7 +4,8 @@ import sys
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
             'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
             'https://iris.bcogc.ca/download/hydraulic_fracture_csv.zip',
-            'https://iris.bcogc.ca/download/drill_csv.zip']
+            'https://iris.bcogc.ca/download/drill_csv.zip',
+            'https://iris.bcogc.ca/download/prod_csv.zip']
 
 OGC_PROD_HEADERS = ['Well Authorization Number', 'Completion Event Sequence', 'UWI', 'Zone Prod Period', 'Area Code',
                     'Formtn Code', 'Well Area Name', 'Oper Abbreviation', 'Production Days', 'Gas Production (e3m3)',
