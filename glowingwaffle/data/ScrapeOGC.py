@@ -4,6 +4,9 @@ import regex
 import sys
 import os
 import zipfile36 as zipfile
+from glowingwaffle.data import ReadData
+import pandas as pd
+from itertools import chain
 
 
 # TODO: Extend this also to the AER, maybe??
@@ -14,8 +17,9 @@ class ScrapeOGC:
         self.urls = list()
         self.file_names = list()
         self.output_folder = folder
-
+        self.wa_num = list()
         self.urls = urls
+        self.dataframes_dict = {}
 
         if folder is not None and not os.path.exists(folder):
             # create a folder if the folder does not currently exist
@@ -108,3 +112,52 @@ class ScrapeOGC:
 
                 # Delete the zip files now that we have extracted them
                 os.remove(files)
+
+    def find_well_names(self, area_code=None, formation_code=None):
+        """
+        Find all of the well names and UWI identifiers in the areas or formations that are defined
+        :param area_code: list, required (default = None)
+                        The list of OGC area codes that are areas of interest to grab wells from
+        :param formation_code: list, required (default = None)
+                        The list of formation codes that are of interest for the model to grab wells from
+        :return:
+        """
+
+        # Since this is the first step, use it to read in the data to the OGC data object
+        trainingData = ReadData()
+
+        trainingData.read_csv_folder(self.output_folder)
+
+        self.dataframes_dict = trainingData.pd_dict
+
+        # Check the 'Fracture Fluid Data.csv' data for
+
+        file_list = ['zone_prd_2016_to_present.csv', 'zone_prd_2007_to_2015.csv']
+        tmp_prod_df = list()
+
+        print("finding well names....")
+        for idx, file in enumerate(file_list):
+            df1 = self.dataframes_dict[file].loc[self.dataframes_dict[file]['Area_code'].isin(area_code)]
+
+            df2 = self.dataframes_dict[file].loc[self.dataframes_dict[file]['Formtn_code'].isin(formation_code)]
+
+            tmp_prod_df.append(pd.concat([df1, df2]))
+
+        self.wa_num.append(pd.concat(tmp_prod_df)['Wa_num'].to_list())
+
+        total_prod_file = 'BC Total Production.csv'
+
+        df1 = self.dataframes_dict[total_prod_file].loc[self.dataframes_dict[total_prod_file]['Area Code'].isin(area_code)]
+
+        df2 = self.dataframes_dict[total_prod_file].loc[self.dataframes_dict[total_prod_file]['Formtn Code'].isin(formation_code)]
+
+        df3 = pd.concat([df1, df2])
+
+        self.wa_num.append(df3['Well Authorization Number'].to_list())
+
+        print("found well names....")
+
+        self.wa_num = list(chain.from_iterable(self.wa_num))
+        # Remove duplicates from the list
+        self.wa_num = list(set(self.wa_num))
+

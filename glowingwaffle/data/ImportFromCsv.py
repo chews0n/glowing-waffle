@@ -8,7 +8,7 @@ class ReadData:
     def __init__(self):
 
         self.files = list()
-        self.pd_array = []
+        self.pd_dict = {}
         self.df = None
         self.featureDf = None
         self.outputDf = None
@@ -27,15 +27,28 @@ class ReadData:
 
         if not os.path.exists(folder):
             sys.exit("The folder supplied: " + folder + " does not exist")
+        idx = 0
+        files_with_headers = ['zone_prd.csv', 'zone_prd_1954_to_2006.csv', 'zone_prd_2007_to_2015.csv', 'zone_prd_2016_to_present.csv']
+        for filename in os.listdir(folder):
+            # only read in csv files
+            if filename.lower().endswith('.csv'):
 
-        for idx, filename in enumerate(os.listdir(folder)):
-            self.files.append(os.path.join(folder, filename))
-            self.pd_array.append(pd.read_csv(self.files[idx]))
+                if filename.lower() in files_with_headers:
+                    print(f"reading in {filename}")
+                    self.files.append(filename)
+                    self.pd_dict[self.files[idx]] = pd.read_csv(os.path.join(folder, self.files[idx]), skiprows=1, encoding ='latin1')
+                    idx += 1
+                else:
+                    print(f"reading in {filename}")
+                    self.files.append(filename)
+                    self.pd_dict[self.files[idx]] = pd.read_csv(os.path.join(folder, self.files[idx]), low_memory=False, encoding ='latin1')
+                    idx += 1
 
-        if len(self.pd_array) == 0:
+        if len(self.pd_dict) == 0:
             sys.exit("The folder supplied: " + folder + " does not contain any files, please revise")
 
-        self.df = pd.concat(self.pd_array)
+        # Will concatenate later with other data frames
+        # self.df = pd.concat(self.pd_array)
 
     def clean_data(self, columns_to_drop=None):
         """

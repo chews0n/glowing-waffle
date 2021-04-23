@@ -63,8 +63,15 @@ OGC_DST_HEADERS = ['UWI', 'Area_code', 'Formtn_code', 'Pool_seq', 'Wa_num', 'Dri
                    'Main_flow_final_press', 'Main_valve_open_time', 'Main_flow_gas_to_surf', 'Dst_remarks',
                    'Init_extrpltd_press', 'Final_extrpltd_press', 'Misrun_flag', 'Skin', 'Permblty', 'Run_temp (c)',
                    'Detail_anlyss_flag', 'Flow_recvry_remarks', 'Dst_date', 'Project_code']
+AREA_CODE = [6200, 9022, 9021]
+
+FORMATION_CODE = [4990, 4995, 4997, 5000, 4000]
+
 
 if __name__ == "__main__":
     # Download the files from the OGC website
     ogcData = ScrapeOGC(folder=sys.argv[1], urls=OGC_URLS)
     ogcData.download_data_url()
+    ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
+
+    print(f"we found {len(ogcData.wa_num)} well names")

@@ -8,6 +8,10 @@ OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_producti
             'https://iris.bcogc.ca/download/drill_csv.zip',
             'https://iris.bcogc.ca/download/prod_csv.zip']
 
+AREA_CODE = [6200, 9022, 9021]
+
+FORMATION_CODE = [4990, 4995, 4997, 5000, 4000]
+
 def dir_path(path):
     if os.path.isdir(path):
         return path
@@ -33,6 +37,10 @@ def parse_arguments():
                                                  'for use with the Montney Formation.')
 
     # add arguments to the parser
+    parser.add_argument("--downloadOGC", type=str2bool, nargs='?', dest='download_ogc',
+                        const=True, default=False,
+                        help="Download the OGC Data")
+
     parser.add_argument("--train", type=str2bool, nargs='?', dest='train',
                         const=True, default=False,
                         help="Run Retraining of the model.")
@@ -56,17 +64,16 @@ def parse_arguments():
 def main():
     args = parse_arguments()
 
-    if args.train:
+    if args.download_ogc:
         # Download the OGC data from the OGC website
         ogc_data = ScrapeOGC(folder=args.model_folder, urls=OGC_URLS)
         ogc_data.download_data_url()
+        ogc_data.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
-        # instantiate the training data object from readData
-        training_data = ReadData()
+        print(f"we found {len(ogc_data.wa_num)} wells")
 
-        # Pass one argument into the program which is the rel or absolute path to the csv files
-        # TODO: revise the csv folder reading as there are separate files that require separate data frames for OGC
-        training_data.read_csv_folder(folder=args.model_folder)
+    if args.train:
+        print("Starting to train the model...")
 
 
 if __name__ == "__main__":
