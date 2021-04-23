@@ -70,6 +70,8 @@ def main():
         ogc_data.download_data_url()
         ogc_data.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
+        ogc_data.read_well_lat_long()
+
         print(f"we found {len(ogc_data.wa_num)} wells")
 
     if args.train:

@@ -20,6 +20,7 @@ class ScrapeOGC:
         self.wa_num = list()
         self.urls = urls
         self.dataframes_dict = {}
+        self.feature_list = None
 
         if folder is not None and not os.path.exists(folder):
             # create a folder if the folder does not currently exist
@@ -113,6 +114,23 @@ class ScrapeOGC:
                 # Delete the zip files now that we have extracted them
                 os.remove(files)
 
+    def find_in_data_frames_dict(self, file_name=None, list_of_values=None, column=None):
+        """
+
+        Parameters
+        ----------
+        file_name string
+        list_of_values list
+        column string
+
+        Returns
+        -------
+        df: pandas dataframe
+        """
+        df = self.dataframes_dict[file_name].loc[self.dataframes_dict[file_name][column].isin(list_of_values)]
+
+        return df
+
     def find_well_names(self, area_code=None, formation_code=None):
         """
         Find all of the well names and UWI identifiers in the areas or formations that are defined
@@ -124,11 +142,11 @@ class ScrapeOGC:
         """
 
         # Since this is the first step, use it to read in the data to the OGC data object
-        trainingData = ReadData()
+        training_data = ReadData()
 
-        trainingData.read_csv_folder(self.output_folder)
+        training_data.read_csv_folder(self.output_folder)
 
-        self.dataframes_dict = trainingData.pd_dict
+        self.dataframes_dict = training_data.pd_dict
 
         # Check the 'Fracture Fluid Data.csv' data for
 
@@ -137,9 +155,9 @@ class ScrapeOGC:
 
         print("finding well names....")
         for idx, file in enumerate(file_list):
-            df1 = self.dataframes_dict[file].loc[self.dataframes_dict[file]['Area_code'].isin(area_code)]
+            df1 = self.find_in_data_frames_dict(file_name=file, list_of_values=area_code, column='Area_code')
 
-            df2 = self.dataframes_dict[file].loc[self.dataframes_dict[file]['Formtn_code'].isin(formation_code)]
+            df2 = self.find_in_data_frames_dict(file_name=file, list_of_values=formation_code, column='Formtn_code')
 
             tmp_prod_df.append(pd.concat([df1, df2]))
 
@@ -147,9 +165,10 @@ class ScrapeOGC:
 
         total_prod_file = 'BC Total Production.csv'
 
-        df1 = self.dataframes_dict[total_prod_file].loc[self.dataframes_dict[total_prod_file]['Area Code'].isin(area_code)]
+        df1 = self.find_in_data_frames_dict(file_name=total_prod_file, list_of_values=area_code, column='Area Code')
 
-        df2 = self.dataframes_dict[total_prod_file].loc[self.dataframes_dict[total_prod_file]['Formtn Code'].isin(formation_code)]
+        df2 = self.find_in_data_frames_dict(file_name=total_prod_file, list_of_values=formation_code,
+                                            column='Formtn Code')
 
         df3 = pd.concat([df1, df2])
 
@@ -161,3 +180,28 @@ class ScrapeOGC:
         # Remove duplicates from the list
         self.wa_num = list(set(self.wa_num))
 
+        self.feature_list = pd.DataFrame(self.wa_num, columns=['Well Authorization Number'])
+
+    def read_well_lat_long(self):
+        """
+
+        Parameters
+        ----------
+        self
+
+        Returns
+        -------
+
+        """
+        # grab the dictionary entry for the 'wells.csv' file and filter it for the well authorization number list
+        filtered_df = self.find_in_data_frames_dict(file_name='wells.csv', list_of_values=self.wa_num, column='WA Num')
+
+        # remove the columns "Surf Nad83 Lat","Surf Nad83 Long" from the wells.csv data and put it into the feature
+        # list
+        filtered_df = filtered_df.loc[:, ["Surf Nad83 Lat", "Surf Nad83 Long", "WA Num"]]
+
+        # rename WA Num to Well Authorization Number to match the other data frame with all of the wells
+        filtered_df = filtered_df.rename(columns={"Surf Nad83 Lat": "SURFACE_LAT", "Surf Nad83 Long": "SURFACE_LONG",
+                                                  "WA Num": "Well Authorization Number"})
+
+        self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])

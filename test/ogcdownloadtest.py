@@ -74,4 +74,6 @@ if __name__ == "__main__":
     ogcData.download_data_url()
     ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
+    ogcData.read_well_lat_long()
+
     print(f"we found {len(ogcData.wa_num)} well names")
