@@ -28,7 +28,16 @@ class ReadData:
         if not os.path.exists(folder):
             sys.exit("The folder supplied: " + folder + " does not exist")
         idx = 0
-        files_with_headers = ['zone_prd.csv', 'zone_prd_1954_to_2006.csv', 'zone_prd_2007_to_2015.csv', 'zone_prd_2016_to_present.csv']
+        files_with_headers = ['zone_prd.csv', 'zone_prd_1954_to_2006.csv', 'zone_prd_2007_to_2015.csv',
+                              'zone_prd_2016_to_present.csv', 'f_operator.csv', 'plant_jur_code.csv', 'pst.csv',
+                              'f_receipt.csv', 'aban_frm.csv', 'pst_dtl.csv', 'dst.csv', 'aban_dtl.csv', 'gas_anal.csv',
+                              'drill_ev.csv', 'oil_dist.csv', 'form_top.csv', 'oil_anal.csv', 'aofp_tst.csv',
+                              'oil_visc.csv', 'clients.csv', 'w_status.csv', 'projects.csv', 'c_status.csv',
+                              'codes.csv', 'area.csv', 'wells.csv', 'logs_run.csv', 'compl_ev.csv', 'dst_rate.csv',
+                              'facilities.csv', 'pools.csv', 'f_design.csv', 'wtr_anal.csv', 'f_processing.csv',
+                              'aofp_dtl.csv', 'water_gas_disposal.csv', 'casings.csv', 'pay_zone.csv', 'compl_wo.csv',
+                              'wtr_inj.csv', 'gas_inj.csv', 'core_cut.csv', 'f_flaring_app.csv', 'f_type.csv']
+
         for filename in os.listdir(folder):
             # only read in csv files
             if filename.lower().endswith('.csv'):
@@ -36,7 +45,7 @@ class ReadData:
                 if filename.lower() in files_with_headers:
                     print(f"reading in {filename}")
                     self.files.append(filename)
-                    self.pd_dict[self.files[idx]] = pd.read_csv(os.path.join(folder, self.files[idx]), skiprows=1, encoding ='latin1')
+                    self.pd_dict[self.files[idx]] = pd.read_csv(os.path.join(folder, self.files[idx]), low_memory=False, skiprows=1, encoding ='latin1')
                     idx += 1
                 else:
                     print(f"reading in {filename}")
