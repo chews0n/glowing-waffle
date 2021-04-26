@@ -1,5 +1,6 @@
 from glowingwaffle.data import ScrapeOGC
 import sys
+import os
 
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
             'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
@@ -70,10 +71,21 @@ FORMATION_CODE = [4990, 4995, 4997, 5000, 4000]
 
 if __name__ == "__main__":
     # Download the files from the OGC website
-    ogcData = ScrapeOGC(folder=sys.argv[1], urls=OGC_URLS)
+    output_folder = None
+    try:
+        output_folder = sys.argv[1]
+    except:
+        output_folder = os.getcwd()
+
+    ogcData = ScrapeOGC(folder=output_folder, urls=OGC_URLS)
+
+    # Comment out the following line if you do not want to download the OGC data for debugging purposes etc.
     ogcData.download_data_url()
+
     ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
     ogcData.read_well_lat_long()
+
+    # TODO: print out the CSV as backup in case you need to load in the data again
 
     print(f"we found {len(ogcData.wa_num)} well names")
