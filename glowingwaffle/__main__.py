@@ -68,14 +68,17 @@ def main():
         # Download the OGC data from the OGC website
         ogc_data = ScrapeOGC(folder=args.model_folder, urls=OGC_URLS)
         ogc_data.download_data_url()
+
+    if args.train:
+        print("Starting to load in the data for training...")
+
         ogc_data.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
         ogc_data.read_well_lat_long()
 
         print(f"we found {len(ogc_data.wa_num)} wells")
 
-    if args.train:
-        print("Starting to train the model...")
+        # TODO: print out the CSV as backup in case you need to load in the data again for training
 
 
 if __name__ == "__main__":
