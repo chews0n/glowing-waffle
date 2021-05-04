@@ -66,10 +66,11 @@ def parse_arguments():
 def main():
     args = parse_arguments()
 
-    if args.download_ogc:
-        # Download the OGC data from the OGC website
-        ogc_data = ScrapeOGC(folder=args.model_folder, urls=OGC_URLS)
-        ogc_data.download_data_url(file_names=FILE_DICT)
+    ogc_data = ScrapeOGC(folder=args.model_folder, urls=OGC_URLS)
+
+    # Download the OGC data from the OGC website
+
+    ogc_data.download_data_url(file_names=FILE_DICT, force_download=args.download_ogc)
 
     if args.train:
         print("Starting to load in the data for training...")
