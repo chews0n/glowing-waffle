@@ -29,7 +29,7 @@ class ScrapeOGC:
             except OSError as err:
                 sys.exit(f'Error Occurred creating directory: {err}')
 
-    def download_data_url(self):
+    def download_data_url(self, file_names=None, force_download=False):
         """
         Download the CSV data from the URLS given in the list of URLS, while we are currently using this for
         the data from the Oil and Gas Council of BC, this can be extended to any file that has a URL, including
@@ -43,6 +43,24 @@ class ScrapeOGC:
         -------
         None
         """
+
+        # Check if the necessary files have already been downloaded
+        dont_download_flag = True
+
+        # Have the ability to force the program to download in order to update the files that may already exist in
+        # the folder
+        if force_download:
+            dont_download_flag = False
+
+        for key in file_names:
+            if not os.path.exists(os.path.join(self.output_folder, key)):
+                dont_download_flag = False
+
+        if dont_download_flag:
+            print(f"All files already exist in the folder: {self.output_folder}, continuing to read in the data to "
+                  f"data frames \n")
+            return
+
         # loop over the requested urls to download the files to the computer
         for idx, dlurls in enumerate(self.urls):
 
@@ -114,7 +132,7 @@ class ScrapeOGC:
                 # Delete the zip files now that we have extracted them
                 os.remove(files)
 
-    def find_in_data_frames_dict(self, file_name=None, list_of_values=None, column=None):
+    def find_in_data_frames_dict(self, file_name=None, list_of_values=None, column=""):
         """
 
         Parameters
@@ -127,9 +145,28 @@ class ScrapeOGC:
         -------
         df: pandas dataframe
         """
+
+        # types of well authorization number header
+
+        if column == "":
+            WA_HEADER_NAMES = ['Wa Num', 'WA Num', 'Wa_num', 'WA_num', 'WA_NUM', 'WA_Num', 'Wa_Num',
+                               'Well Authorization Number']
+
+            for header_names in self.dataframes_dict[file_name].columns:
+                for wa_names in  WA_HEADER_NAMES:
+                    if header_names == wa_names:
+                        column = header_names
+                        break
+
+                if not column == "":
+                    break
+
+            if column == "":
+                sys.exit(f'Error Occurred, could not find a well authorization header in: {file_name}, please check the file')
+
         df = self.dataframes_dict[file_name].loc[self.dataframes_dict[file_name][column].isin(list_of_values)]
 
-        return df
+        return df, column
 
     def find_well_names(self, area_code=None, formation_code=None):
         """
@@ -155,9 +192,9 @@ class ScrapeOGC:
 
         print("finding well names....")
         for idx, file in enumerate(file_list):
-            df1 = self.find_in_data_frames_dict(file_name=file, list_of_values=area_code, column='Area_code')
+            df1, _ = self.find_in_data_frames_dict(file_name=file, list_of_values=area_code, column='Area_code')
 
-            df2 = self.find_in_data_frames_dict(file_name=file, list_of_values=formation_code, column='Formtn_code')
+            df2, _ = self.find_in_data_frames_dict(file_name=file, list_of_values=formation_code, column='Formtn_code')
 
             tmp_prod_df.append(pd.concat([df1, df2]))
 
@@ -165,9 +202,9 @@ class ScrapeOGC:
 
         total_prod_file = 'BC Total Production.csv'
 
-        df1 = self.find_in_data_frames_dict(file_name=total_prod_file, list_of_values=area_code, column='Area Code')
+        df1, _ = self.find_in_data_frames_dict(file_name=total_prod_file, list_of_values=area_code, column='Area Code')
 
-        df2 = self.find_in_data_frames_dict(file_name=total_prod_file, list_of_values=formation_code,
+        df2, _ = self.find_in_data_frames_dict(file_name=total_prod_file, list_of_values=formation_code,
                                             column='Formtn Code')
 
         df3 = pd.concat([df1, df2])
@@ -182,26 +219,30 @@ class ScrapeOGC:
 
         self.feature_list = pd.DataFrame(self.wa_num, columns=['Well Authorization Number'])
 
-    def read_well_lat_long(self):
+    def read_well_data(self, file_name=None):
         """
 
         Parameters
         ----------
         self
 
+        file_name: dictionary that has the file and headers needed for the data object
+
         Returns
         -------
 
         """
-        # grab the dictionary entry for the 'wells.csv' file and filter it for the well authorization number list
-        filtered_df = self.find_in_data_frames_dict(file_name='wells.csv', list_of_values=self.wa_num, column='WA Num')
+        # grab the dictionary entry for the file and filter it for the well authorization number list
 
-        # remove the columns "Surf Nad83 Lat","Surf Nad83 Long" from the wells.csv data and put it into the feature
-        # list
-        filtered_df = filtered_df.loc[:, ["Surf Nad83 Lat", "Surf Nad83 Long", "WA Num"]]
+        for key in file_name:
+            filtered_df, wa_col = self.find_in_data_frames_dict(file_name=key, list_of_values=self.wa_num)
 
-        # rename WA Num to Well Authorization Number to match the other data frame with all of the wells
-        filtered_df = filtered_df.rename(columns={"Surf Nad83 Lat": "SURFACE_LAT", "Surf Nad83 Long": "SURFACE_LONG",
-                                                  "WA Num": "Well Authorization Number"})
+            # remove the columns from the header list in the dictionary
+            file_name[key].append(wa_col)
 
-        self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])
+            filtered_df = filtered_df.loc[:, file_name[key]]
+
+            # rename WA Num to Well Authorization Number to match the other data frame with all of the wells
+            filtered_df = filtered_df.rename(columns={wa_col: "Well Authorization Number"})
+
+            self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])

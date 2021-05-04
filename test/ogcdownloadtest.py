@@ -12,6 +12,8 @@ AREA_CODE = [6200, 9022, 9021]
 
 FORMATION_CODE = [4990, 4995, 4997, 5000, 4000]
 
+FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"]}
+
 if __name__ == "__main__":
     # Download the files from the OGC website
     output_folder = None
@@ -22,11 +24,10 @@ if __name__ == "__main__":
 
     ogcData = ScrapeOGC(folder=output_folder, urls=OGC_URLS)
 
-    # Comment out the following line if you do not want to download the OGC data for debugging purposes etc.
-    ogcData.download_data_url()
+    ogcData.download_data_url(file_names=FILE_DICT)
 
     ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
-    ogcData.read_well_lat_long()
+    ogcData.read_well_data(file_name=FILE_DICT)
 
     print(f"we found {len(ogcData.wa_num)} well names")
