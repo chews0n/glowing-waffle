@@ -234,7 +234,7 @@ class ScrapeOGC:
         """
         # grab the dictionary entry for the file and filter it for the well authorization number list
 
-        for key in file_name:
+        for key in file_name.keys():
             filtered_df, wa_col = self.find_in_data_frames_dict(file_name=key, list_of_values=self.wa_num)
 
             # remove the columns from the header list in the dictionary
@@ -246,3 +246,7 @@ class ScrapeOGC:
             filtered_df = filtered_df.rename(columns={wa_col: "Well Authorization Number"})
 
             self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])
+            
+
+            
+            
