@@ -46,3 +46,5 @@ https://github.com/chews0n/glowing-waffle
 8. validation -> either compare to a simulator or use another data set that wasn't used in training or both 
 
 8. End Product should be somewhat universal -> probably require retraining for different plays (eg. marcellus vs bakken vs montney)
+
+** test change for auth

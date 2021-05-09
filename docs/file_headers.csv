@@ -1,0 +1,98 @@
+f_operator.csv HEADERS
+Fac Id Code,Oper Id,Fac Oper Eff Period,Fac Oper Term Period
+plant_jur_code.csv HEADERS
+Code,Description
+pst.csv HEADERS
+UWI,Area_code,Formtn_code,Pool_seq,Wa_num,Compltn_event_seq,Press_survey_datum_depth,Pst_Comments,Abs_Gauge,Project_code
+perf_net_interval.csv HEADERS
+WA NUM,DRILLNG EVENT,COMPLTN EVENT,UWI,WELL NAME,COMPLTN DATE,COMPLTN TOP DEPTH (m),COMPLTN BASE DEPTH (m),COMPLTN TYPE,COMPLETION WORKOVER KEY,FRAC SUMMARY KEY,PERF STAGE NUM,INTERVAL TOP DEPTH (m),INTERVAL BASE DEPTH (m)
+f_receipt.csv HEADERS
+Fac Id Code,Gas Prod Vol,Lease Fuel,Flared Gas,Vented Gas,Metrng Diffrnc Water,Metrng Diffrnc Gas,Oil Prod Vol,Water Prod Vol,Open Oil Invntry,Close Oil Invntry,Open Water Invntry,Close Water Invntry,Tot Oil Recpts Vol,Tot Oil Delvrs Vol,Tot Gas Recpts Vol,Tot Gas Delvrs Vol,Tot Water Recpts Vol,Tot Water Delvrs Vol,Recpt Date,Prod Period
+aban_frm.csv HEADERS
+UWI,Wa Num,Drilling Event,Plug Num,Plug Type,Formtn Code
+pst_dtl.csv HEADERS
+UWI,Wa_num,Compltn_event_seq,Press_survey_date,Press_survey_type,Shutin_time (days),Run_depth_temp (C),Run_depth (m),Run_depth_press (kPa),Datum_press (kPa),Zone_press_comments,Formtn_gradnt,Wellbr_gradnt_at_mpp,Rp_flag,Pressure_building_rate
+dst.csv HEADERS
+UWI,Area_code,Formtn_code,Pool_seq,Wa_num,Drillng_event_seq,Top_intrvl_depth (m),Dst_num,Dst_Type,Base_intrvl_depth (m),Init_hydro_press,Init_shutin_press,Init_shutin_time,Main_flow_init_press,Preflw_time,Preflw_start_press,Preflw_end_press,Preflw_gas_to_surf,Final_hydro_press,Final_shutin_press,Final_shutin_time,Main_flow_final_press,Main_valve_open_time,Main_flow_gas_to_surf,Dst_remarks,Init_extrpltd_press,Final_extrpltd_press,Misrun_flag,Skin,Permblty,Run_temp (c),Detail_anlyss_flag,Flow_recvry_remarks,Dst_date,Project_code
+aban_dtl.csv HEADERS
+Uwi,Wa Num,Drillng Event Seq,Plug Num,Plug Type,Top Depth (m),Base Depth (m),Cement Vol (tonnes),Cement Grade,Bridge Plug Set Depth,Remarks,Abandonment Date
+gas_anal.csv HEADERS
+Uwi,Area Code,Formtn code,Pool seq,Wa num,Drillng event seq,Gas lab num,Sample point code,Gas anlyss base depth (m),Gas anlyss top depth (m),Sample date,Reltv densty calc,Test num,Test perf flag,H2 fractn,Helium fractn,Co2 fractn,H2s fractn,N2 fractn,C1 fractn,C2 fractn,C3 fractn,Ic4 fractn,Nc4 fractn,Ic5 fractn,Nc5 fractn,C6 fractn,C7 fractn,C8 fractn,C9 fractn,C10 fractn,Temp recvd (C),Press recvd (kPa),Ghv meas,Ghv calc,Vapour press,Reltv densty meas,Pcp ppc (kPa),Pcp ptc (K),Field lab flag,Molclr wt of c7,C5 ml mol,Molclr wt of gas,Recmbnd flag,Project code
+zone_prd_1954_to_2006.csv HEADERS
+Wa_num,Compltn_event_seq,Prod_period,UWI,Area_code,Formtn_code,Pool_seq,Gas_prod_vol (e3m3),Oil_prod_vol (m3),Water_prod_vol (m3),Cond_prod_vol (m3),Prod_days ,Gas_prod_cum (e3m3),Oil_prod_cum (m3),Water_prod_cum (m3),Cond_prod_cum (m3),Project_code
+drill_ev.csv HEADERS
+UWI,WA NUM,Drilling Event,Lahee Type,Kb Elev (m),Cf Elev (m),Top Cuttng Depth (m),Base Cuttng Depth (m),Td Depth (m),Td nad27 lat,Td nad27 long,Td nad83 lat,Td nad83 long,Td utm83 northng (m),Td utm83 eastng (m),Td North (m),Td East (m),Td ref corner,Td qtr unit,Td unit,Td block,Td map,Td lsd,Td sect,Td twp,Td range,Classfctn Code,Reclassfctn Date,Reclassfctn Pendng Flag,Contrctr,Spud Date,Rig Rels Date,Rentry Date,Oil Spacng Area,Gas Spacng Area,Pb depth (m),Td ref lsd,Td ref unit,Td ref block,Td ref map,Td ref sect,Td ref twp,Td ref range,Td utm zone num,Dirctnl flag,Confdntl flag,Expected Conf Rels Date
+oil_dist.csv HEADERS
+Oil_lab_num,Fractn_distlld_vol,Distlltn_temp (C)
+form_top.csv HEADERS
+UWI,Wa_num,Drillng_event_seq,Oper_minstry_flag,Formtn_code,Meas_formtn_top_depth,Tvd_formtn_top_depth 
+oil_anal.csv HEADERS
+UWI,Area_code,Formtn_code,Pool_seq,Wa_num,Drillng_event_seq,Oil_lab_num,Sample_point_code,Test_Perf_Flag,Oil_anlyss_base_depth (m),Oil_anlyss_top_depth (m),Sample_date,Bsw_total,Reltv_densty (kg/m3),Abslt_oil_densty (kg/m3),Api_gravty,Tot_sulphr_mass_fractn,Pour_point_usb_m (C),Distlltn_crackd (C),Naphtha_fractn_200C,Kersn_fractn_275C,Light_gas_oil_fractn_350C,Charctrzed_factor,Invert_mud_sample,Oil_anlyss_comments,Pour_point_astm (C),Press_recvd (kPa),Temp_recvd (C),Distlltn_method_type,Final_boil_point (C),Project_code
+zone_prd_2016_to_present.csv HEADERS
+Wa_num,Compltn_event_seq,Prod_period,UWI,Area_code,Formtn_code,Pool_seq,Gas_prod_vol (e3m3),Oil_prod_vol (m3),Water_prod_vol (m3),Cond_prod_vol (m3),Prod_days ,Gas_prod_cum (e3m3),Oil_prod_cum (m3),Water_prod_cum (m3),Cond_prod_cum (m3),Project_code
+aofp_tst.csv HEADERS
+Wa_num,Compltn_event_seq,UWI,Area_code,Formtn_code,Pool_seq,Aofp_date,Tot_flow_dur (hrs),Tot_gas_prodcd (e3m3),Tot_water_prodcd (m3),Tot_cond_prodcd (m3),Stablzd_condtn_flag,Prod_method_flag,Aofp_test_comments,Test_type,Wh_assmd_flag,Sf_assmd_flag,Sand_face_aofp,Sand_face_n_value,Wellhd_aofp,Wellhd_n_value,Static_bottom_press (kPa),Skin,Project_code
+oil_visc.csv HEADERS
+Oil_lab_num,Viscsty_temp (C),Viscsty_abslt (mPa-S),Viscsty_kinmtc (mm2/S)
+clients.csv HEADERS
+Client Id,Client Name,Client Abbrev,Client Eff Period
+w_status.csv HEADERS
+Wa Num,Mode Code,Fluid Type,Ops Type,Status Eff Date,Status Term Date
+hydraulic_fracture.csv HEADERS
+WA NUM,DRILLNG EVENT,COMPLTN EVENT,UWI,WELL NAME,COMPLTN DATE,FRAC START TIME,COMPLTN TOP DEPTH (m),COMPLTN BASE DEPTH (m),COMPLTN TYPE,COMPLETION WORKOVER KEY,FRAC SUMMARY KEY,FRAC STAGE NUM,BASE FLUID,VISCOSITY GEL TYPE,ENERGIZER,ENERGIZER TYPE,PLUG BACK TOTAL DEPTH (m),ACID SPEARHEAD AMOUNT (m3),ACID TYPE,BREAK DOWN PRESSURE (MPa),INST SHUT IN PRESSURE (MPa),MAX TREATING PRESSURE (MPa),AVG TREATING PRESSURE (MPa),AVG RATE (m3/min),FRAC GRADIENT (KPa/m),TOTAL FLUID PUMPED (m3),TOTAL CO2 PUMPED (m3),TOTAL N2 PUMPED (scm),TOTAL CH4 PUMPED (e3m3),RADIOACTIVE FLAG,RADIOACTIVE TRACER TYPE,CHEMICAL TRACER FLAG,CHEMICAL TRACER TYPE,PROPPANT TYPE1,PROPPANT TYPE1 PUMPED (t),PROPPANT TYPE1 PLACED (t),PROPPANT TYPE2,PROPPANT TYPE2 PUMPED (t),PROPPANT TYPE2 PLACED (t),PROPPANT TYPE3,PROPPANT TYPE3 PUMPED (t),PROPPANT TYPE3 PLACED (t),PROPPANT TYPE4,PROPPANT TYPE4 PUMPED (t),PROPPANT TYPE4 PLACED (t)
+projects.csv HEADERS
+Area Code,Formtn Code,Pool Seq,Project Code,Project Name,Project Type,Proj Revns Num,Proj Doa,Proj Dga,Proj Eff Date,Proj Apprvl Date,Proj Term Date,Proj Area,PE Num
+c_status.csv HEADERS
+UWI,Wa_num,Compltn_event_seq,Mode_code,Fluid_type,Ops_type,Structure_code,Status_eff_date,Status_term_date
+codes.csv HEADERS
+Table ID,Code,Description
+area.csv HEADERS
+Area Code,Area Desc,Area Eff Date,Area Term Date,Desgntd Field Flag
+wells.csv HEADERS
+Well Surf Loc,Well Name,WA Num,Surf Nad27 Lat,Surf Nad27 Long,Surf Nad83 Lat,Surf Nad83 Long,Surf UTM Zone Num,Surf UTM83 Northng,Surf UTM83 Eastng,Surf North,Surf East,Surf Owner,Ground Elevtn,Directional Flag,Surf Ref Corner,Surf Ref Unit,Surf Ref Block,Surf Ref Map,Surf Ref Lsd,Surf Ref Sect,Surf Ref Twp,Surf Ref Range,Surf DLS Exception,Surf Lsd,Surf Sect,Surf Twp,Surf Range,Surf Qtr Unit,Surf NTS Exception,Surf Unit,Surf Block,Surf Map,Oper Id,Oper Abbrev,Oper Abbrev2,Optnl Unit,Well Area Name,Well Name Date,Special Well Class Code,Test Hole
+logs_run.csv HEADERS
+UWI,Wa_num,Drillng_event_seq,Log_run_date,Log_run_num,Log_type,Bottom_hole_temp,Top_logged_intrvl,Log_base_intrvl,Log_run_comments
+compl_ev.csv HEADERS
+UWI,Area_code,Formtn_code,Pool_seq,Wa_num,Drillng_event_seq,Commngld_flag,Compltn_event_seq,Zone_ip_period,Zone_last_prod_period,Compltn_date,Compltn_top_depth,Compltn_base_depth,Project_code
+dst_rate.csv HEADERS
+Wa_num,Drillng_event_seq,Dst_num,Flowing_fluid_type,Init_fluid_rate,Avg_fluid_rate,Final_fluid_rate
+facilities.csv HEADERS
+Fac Id Code,Fac Name,Surf Twp,Surf Range,Surf Sect,Surf Lsd,Surf Map,Surf Block,Surf Unit,Surf Qtr Unit,Applctn Date,Apprvl Date,Ops Eff Date,Ops Term Date,Amend Applctn Date,Amend Apprvl Date,Amend Ops Eff Date,Amend Ops Term Date,Plant Jursdctn Code,Comprssr kW,Remarks,Fac Class Code,Main Fields Served
+perf.csv HEADERS
+WA NUM,DRILLNG EVENT,COMPLTN EVENT,UWI,WELL NAME,COMPLTN DATE,COMPLTN TOP DEPTH (m),COMPLTN BASE DEPTH (m),COMPLTN TYPE,COMPLETION WORKOVER KEY,FRAC SUMMARY KEY,PERF STAGE NUM,CHARGE TYPE,CHARGE SIZE (g),SHOTS PER METER,DEGREE OF PHASING,PERF COMMENTS
+pools.csv HEADERS
+Area Code,Formtn Code,Pool Seq
+BC Total Production.csv HEADERS
+Well Authorization Number,Completion Event Sequence,UWI,Zone Prod Period,Area Code,Formtn Code,Well Area Name,Oper Abbreviation,Production Days,Gas Production (e3m3),Oil Production (m3),Condensate Production (m3),Water Production (m3),Marketable Gas Volume (e3m3),Ethane Sales Volume (m3),Propane Sales Volume (m3),Butane Sales Volume (m3),Pentane Sales Volume (m3)
+f_design.csv HEADERS
+Fac Id Code,Capcty Vol,Gas Outlet Vol,C3 Capcty Vol,C4 Capcty Vol,C5 Plus Capcty Vol,Sulphr Capcty Vol,Sulphr Emssn Vol,Sulphr Recvry Effcncy,Lpg Mix Capcty Vol,Comments
+zone_prd_2007_to_2015.csv HEADERS
+Wa_num,Compltn_event_seq,Prod_period,UWI,Area_code,Formtn_code,Pool_seq,Gas_prod_vol (e3m3),Oil_prod_vol (m3),Water_prod_vol (m3),Cond_prod_vol (m3),Prod_days ,Gas_prod_cum (e3m3),Oil_prod_cum (m3),Water_prod_cum (m3),Cond_prod_cum (m3),Project_code
+wtr_anal.csv HEADERS
+Uwi,Area code,Formtn code,Pool seq,Wa num,Drillng event seq,Water lab num,Sample point code,Test perf base depth (m),Test perf top depth (m),Sample date,Reltv densty,Water anlyss comments,Test num,Mud resstvty (mg/l),Salnty (mg/l),Tot solids disslvd calc (mg/l),Restvty (mg/l),Na contnt (mg/l),K contnt (mg/l),Ca contnt (mg/l),Mg contnt (mg/l),Ba contnt (mg/l),Sr contnt (mg/l),Fe contnt (mg/l),Cl contnt (mg/l),Br contnt (mg/l),I contnt (mg/l),Hco3 contnt (mg/l),So4 contnt (mg/l),Co3 contnt (mg/l),Oh contnt (mg/l),H2s contnt (mg/l),H2s contnt desc,Test perf flag,Project code
+f_processing.csv HEADERS
+Fac Id Code,Fac Procssng Type,Fac Proc Eff Period,Fac Proc Term Period
+zone_prd.csv HEADERS
+Wa_num,Compltn_event_seq,Prod_period,UWI,Area_code,Formtn_code,Pool_seq,Gas_prod_vol (e3m3),Oil_prod_vol (m3),Water_prod_vol (m3),Cond_prod_vol (m3),Prod_days ,Gas_prod_cum (e3m3),Oil_prod_cum (m3),Water_prod_cum (m3),Cond_prod_cum (m3),Project_code
+aofp_dtl.csv HEADERS
+Wa_num,Compltn_event_seq,Aofp_date,Aofp_detail_seq,Time_length_flow (hrs),Gas_rate (e3m3/d),Water_rate (m3/d),Cond_rate (m3/d),Tot_gas_rate (e3m3/d),Aof_final_flow_press (kPaa),Aof_final_shutin_press (kPaa)
+water_gas_disposal.csv HEADERS
+Wa Num,CE,Serv Year,Serv Month,Water Dispsl Vol (m3),Wellhd Press (kPa),Water Dispsl Hours,Gas Dispsl Vol (e3m3),Gas Dispsl Hours,Wellhd Temp
+casings.csv HEADERS
+Uwi,Wa Num,Drillng Event Seq,Casing Shoe Depth (m),Casing Grade Code,Casing Size (mm),Cement Class Code,Cement Grade,Casing Liner Top Depth (m),Casing Liner Base Depth (m),Casing Type,Casing Joint Qty,Casing Comments,Cement Vol (tonnes),Cement Returns To Surf,Casing Weight (Kg/m),Casing Date
+pay_zone.csv HEADERS
+Uwi,Area Code,Formtn Code,Pool Seq,Wa Num,Drillng Event Seq,Pay Type,Trapping Code,Formtn Temp,Rw at formtn temp,Meas gas oil contct depth (m),Tvd gas oil contct depth (m),Meas top unit depth (m),Tvd top unit depth (m),Meas top pay depth (m),Tvd top pay depth (m),Meas base pay depth (m),Tvd base pay depth (m),Meas net pay size,Oil porsty,Gas porsty,Oil water satrtn,Gas water satrtn,Tvd oil net pay size,Tvd gas net pay size,Meas oil water contct depth (m),Tvd oil water contct depth (m),Meas gas water contct depth (m),Tvd gas water contct depth (m),Lithology,Meas top oil pay depth (m),Tvd top oil pay depth (m),Meas base gas pay depth (m),Tvd base gas pay depth (m),Contact type,Project Code
+compl_wo.csv HEADERS
+UWI,Area_code,Formtn_code,Pool_seq,Wa_num,Compltn_event_seq,Compltn_date,Compltn_sub_act,Compltn_top_depth (m),Compltn_base_depth (m),Openhole_diam (mm),Compltn_type,Stimltn_type,Flowng_press (kPa),Flow_rate (e3m3/d),Flow_rate_date,Flow_fluid_type,Stimltn_vol (m3),Stimltn_press (kPa),Flow_summry,Compltn_summry,Project_code,Compltn_workover_key
+wtr_inj.csv HEADERS
+Wa num,Compltn event seq,Serv period,Uwi,Area code,Formtn code,Pool seq,Water inj vol,Water inj days,Wellhd Press (kPa),Water inj cum,Project Code
+gas_inj.csv HEADERS
+Wa num,Compltn event seq,Serv period,Uwi,Area code,Formtn code,Pool seq,Gas inj vol,Gas inj days,Wellhd Press (kPa),Gas inj cum,Project Code
+core_cut.csv HEADERS
+UWI,Area_code,Formtn_code,Pool_seq,Wa_num,Drillng_event_seq,Core_date,Top_Core_Depth (m),Base_Core_Depth (m),Core_formtn_code,Cut_metre (m),Recvrd_metre (m),Core_comments,Core_type,Core_Anlyss_Type,Core_num,Project_code
+f_flaring_app.csv HEADERS
+Fac Id Code,Apprvd Flarng Vol,Actual Flarng Vol,Actual Flarng Date,Apprvd Flarng Date
+Fracture Fluid Data.csv HEADERS
+Fracture Date,WA Number,Well Area Name,Operator,Well Name,Latitude,Longitude,UWI,Trade Name,Supplier,Purpose,CAS Number,Ingredient Comments,Ingredient Name,Ingredient Concentration in HF Fluid % by Mass,Ingredient Percentage in Additive by % Mass,Total Water Volume (m^3)
+f_type.csv HEADERS
+Code,Description
