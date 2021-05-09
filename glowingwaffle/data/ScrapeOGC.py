@@ -149,8 +149,8 @@ class ScrapeOGC:
         # types of well authorization number header
 
         if column == "":
-            WA_HEADER_NAMES = ['Wa Num', 'WA Num', 'Wa_num', 'WA_num', 'WA_NUM', 'WA_Num', 'Wa_Num',
-                               'Well Authorization Number']
+            WA_HEADER_NAMES = ['Wa Num', 'WA Num', 'Wa_num', 'WA_num', 'WA_NUM', 'WA_Num', 'Wa_Num', 'WA NUM',
+                               'WA Number','Well Authorization Number']
 
             for header_names in self.dataframes_dict[file_name].columns:
                 for wa_names in  WA_HEADER_NAMES:
@@ -246,3 +246,4 @@ class ScrapeOGC:
             filtered_df = filtered_df.rename(columns={wa_col: "Well Authorization Number"})
 
             self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])
+
