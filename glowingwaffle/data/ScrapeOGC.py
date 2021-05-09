@@ -7,6 +7,7 @@ import zipfile36 as zipfile
 from glowingwaffle.data import ReadData
 import pandas as pd
 from itertools import chain
+import numpy as np
 
 
 # TODO: Extend this also to the AER, maybe??
@@ -150,7 +151,7 @@ class ScrapeOGC:
 
         if column == "":
             WA_HEADER_NAMES = ['Wa Num', 'WA Num', 'Wa_num', 'WA_num', 'WA_NUM', 'WA_Num', 'Wa_Num',
-                               'Well Authorization Number']
+                               'Well Authorization Number', 'WA NUM']
 
             for header_names in self.dataframes_dict[file_name].columns:
                 for wa_names in  WA_HEADER_NAMES:
@@ -219,6 +220,8 @@ class ScrapeOGC:
 
         self.feature_list = pd.DataFrame(self.wa_num, columns=['Well Authorization Number'])
 
+        
+        
     def read_well_data(self, file_name=None):
         """
 
@@ -246,3 +249,46 @@ class ScrapeOGC:
             filtered_df = filtered_df.rename(columns={wa_col: "Well Authorization Number"})
 
             self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])
+    
+    def calc_well_design(self):
+        
+        dfCluster = self.features_list['Well Authorization Number',
+                                       'PERF STAGE NUM',
+                                       'INTERVAL TOP DEPTH (m)',
+                                       'INTERVAL BASE DEPTH (m)', 
+                                       'Formtn_code', 
+                                       'Tvd_formtn_top_depth ',
+                                       'Compltn_top_depth',
+                                       'Compltn_base_depth',]
+        dfStage = pd.DataFrame()
+        dfWell = pd.DataFrame()
+        
+        dfStage = dfCluster.groupby(['Well Authorization Number','PERF STAGE NUM']).agg({'INTERVAL TOP DEPTH (m)':'count'})
+        dfStage.rename(columns = {'INTERVAL TOP DEPTH (m)':'Cluster Count'}, inplace =True)
+        
+        dfWell = dfCluster.groupby('Well Authorization Number').agg({'INTERVAL BASE DEPTH (m)':np.max, 
+                                          'INTERVAL TOP DEPTH (m)':np.min,
+                                          'PERF STAGE NUM':'nunique'})
+        dfWell.rename(columns = {'INTERVAL BASE DEPTH (m)':'Well Length', 
+                         'INTERVAL TOP DEPTH (m)': 'Heel Perf Depth',
+                          'PERF STAGE NUM': 'Number of Stages'}, inplace = True)
+        dfWell['Completed Length'] = dfWell['Well Length']-dfWell['Heel Perf Depth']
+        
+        
+        dfCluster['Stage Length'] =  dfCluster['Compltn_base_depth'] - dfCluster['Compltn_top_depth']
+        dfCluster = pd.merge(dfCluster, dfStage, 
+                             on = ['Well Authorizatoin Number','PERF STAGE NUM'],
+                             how = 'left')
+        dfCluster['Cluster Spacing'] = dfCluster['Stage Length']/(dfCluster['Cluster Count']-1)
+        dfClusterPivot = dfCluster.pivot_table(index = ['Well Authorization Number'], 
+                                   values = ['Stage Length','Cluster Spacing','Cluster Count'],
+                                   aggfunc = np.median)
+        dfWell = pd.merge(dfWell, dfClusterPivot, on = 'Well Authorization Number')
+        
+        dfWell.loc[(dfWell['Cluster Count'] < 2), 'Cluster Spacing'] = dfWell['Completed Length']/dfWell['Number of Stages']
+        dfWell = dfWell.drop(['Heel Perf Depth'])
+        self.feature_list = pd.merge(self.feature_list, dfWell,
+                                     on = 'Well Authorization Number',
+                                     how = 'left')
+
+    

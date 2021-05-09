@@ -12,7 +12,10 @@ AREA_CODE = [6200, 9022, 9021]
 
 FORMATION_CODE = [4990, 4995, 4997, 5000, 4000]
 
-FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"]}
+FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"], 
+             'compl_ev.csv':["Compltn_top_depth", "Compltn_base_depth", "Formtn_code"],
+             'form_top.csv':["Formtn_code", "Tvd_formtn_top_depth "], 
+             'perf_net_interval.csv':["PERF STAGE NUM", "INTERVAL TOP DEPTH (m)", "INTERVAL BASE DEPTH (m)"]}
 
 if __name__ == "__main__":
     # Download the files from the OGC website
