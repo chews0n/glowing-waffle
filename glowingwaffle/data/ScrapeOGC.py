@@ -310,6 +310,8 @@ class ScrapeOGC:
         df2['Tonnage per m'] = df2['Tonnage per m'].round(2)
 
         print("Determining Energzier")
+
+        # TODO: Check what the Energizer should be with multiple Energizer types for different stages, if there is a stage w/o None, use that and move on
         df2['Energizer'] = group.apply(lambda x: x['ENERGIZER'].value_counts().index.tolist()[0] if len(x['ENERGIZER'].value_counts().index.tolist()) > 0 else "None")
         df2['Energizer Type'] = group.apply(lambda x: x['ENERGIZER TYPE'].value_counts().index.tolist()[0] if len(x['ENERGIZER TYPE'].value_counts().index.tolist()) > 0 else "None")
 
@@ -327,6 +329,9 @@ class ScrapeOGC:
 
         self.feature_list = pd.merge(self.feature_list, df2, how="left", on=['Well Authorization Number'])
 
+        # TODO: create a list of things to remove from the feature_list
+        #self.removal_list.append('PERF COMMENTS')
+
     def fill_feature_list_nan_with_val(self, columns=list(), val=0):
         """
         fill the columns in the list with the value given instead of nan
@@ -343,3 +348,20 @@ class ScrapeOGC:
 
         for column in columns:
             self.feature_list[column] = self.feature_list[column].fillna(value=0, inplace=True)
+
+    def remove_columns(self):
+        """
+        Remove extra columns that were added to the feature list for the final stage before training
+
+        Parameters
+        ----------
+        columns
+        val
+
+        Returns
+        -------
+
+        """
+
+        for column in self.removal_list:
+            self.feature_list = self.feature_list.drop([column], axis=1)

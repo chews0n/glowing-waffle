@@ -49,4 +49,6 @@ if __name__ == "__main__":
     ogcData.fill_feature_list_nan_with_val(columns=['Total CO2 Pumped (m3)', 'Total N2 Pumped (scm)',
                                                     'Total CH4 Pumped (e3m3)'], val=0)
 
+    ogcData.remove_columns()
+
     print(f"we found {len(ogcData.wa_num)} well names")
