@@ -1,7 +1,7 @@
 import pandas as pd
 
 #select appropriate columns from perf csv.
-perf_df = pd.read_csv("D:/glowing-waffle/test/perf.csv",usecols=['WA NUM','UWI','PERF STAGE NUM','CHARGE TYPE','CHARGE SIZE (g)','SHOTS PER METER','DEGREE OF PHASING','PERF COMMENTS'])
+perf_df = pd.read_csv("/test/perf.csv", usecols=['WA NUM', 'UWI', 'PERF STAGE NUM', 'CHARGE TYPE', 'CHARGE SIZE (g)', 'SHOTS PER METER', 'DEGREE OF PHASING', 'PERF COMMENTS'])
 
 
 #function for applying Frac Type based on the perf data; rudimentary, but should do the job. Two options: Frac Sleeve or Plug and Perf.
@@ -23,7 +23,7 @@ df4 = df4.rename(columns={'max':'Frac Type'})
 
 #print(df3.mode())
 #selecting appropriate columns from Hydro frac csv, and key computations
-hf_df = pd.read_csv("D:/glowing-waffle/test/hydraulic_fracture.csv",usecols= ['WA NUM','UWI','COMPLTN TOP DEPTH (m)','COMPLTN BASE DEPTH (m)','FRAC STAGE NUM','VISCOSITY GEL TYPE','ENERGIZER','ENERGIZER TYPE',
+hf_df = pd.read_csv("/test/hydraulic_fracture.csv", usecols= ['WA NUM', 'UWI', 'COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'FRAC STAGE NUM', 'VISCOSITY GEL TYPE', 'ENERGIZER', 'ENERGIZER TYPE',
                                                                                'AVG TREATING PRESSURE (MPa)','FRAC GRADIENT (KPa/m)','TOTAL FLUID PUMPED (m3)','TOTAL CO2 PUMPED (m3)','TOTAL N2 PUMPED (scm)',
                                                                                'TOTAL CH4 PUMPED (e3m3)','PROPPANT TYPE1','PROPPANT TYPE1 PLACED (t)','PROPPANT TYPE2','PROPPANT TYPE2 PLACED (t)',
                                                                                'PROPPANT TYPE3','PROPPANT TYPE3 PLACED (t)','PROPPANT TYPE4','PROPPANT TYPE4 PLACED (t)'])
