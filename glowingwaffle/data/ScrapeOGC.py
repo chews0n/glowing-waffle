@@ -302,6 +302,9 @@ class ScrapeOGC:
         print("Determining Average Treating Pressure")
         df2['Average Treating Pressure'] = group.apply(lambda x: x['AVG TREATING PRESSURE (MPa)'].mean())
 
+        print("Determining Average Injection Rate")
+        df2['Average Injection Rate'] = group.apply(lambda x: x['AVG RATE (m3/min)'].mean())
+
         print("Determining Frac Gradient (kPa/m)")
         df2['FRAC GRADIENT (KPa/m)'] = group.apply(lambda x: x['FRAC GRADIENT (KPa/m)'].mean())
 
@@ -315,6 +318,13 @@ class ScrapeOGC:
         df2['Energizer'] = group.apply(lambda x: x['ENERGIZER'].value_counts().index.tolist()[0] if len(x['ENERGIZER'].value_counts().index.tolist()) > 0 else "None")
         df2['Energizer Type'] = group.apply(lambda x: x['ENERGIZER TYPE'].value_counts().index.tolist()[0] if len(x['ENERGIZER TYPE'].value_counts().index.tolist()) > 0 else "None")
 
+        print("Determining Fluid Pumped (m3)")
+        df2['Total Fluid Pumped (m3)'] = group.apply(lambda x: sum(x['TOTAL FLUID PUMPED (m3)']))
+
+        rint("Determining Fluid Per Metre")
+        df2['Fluid per m'] = df2['Total Fluid Pumped (m3)'] / df2['Lateral Length']
+        df2['Fluid per m'] = df2['Fluid per m'].round(2)
+
         print("Determining CO2 Pumped (m3)")
         df2['Total CO2 Pumped (m3)'] = group.apply(lambda x: sum(x['TOTAL CO2 PUMPED (m3)']))
 
@@ -325,7 +335,7 @@ class ScrapeOGC:
         df2['Total CH4 Pumped (e3m3)'] = group.apply(lambda x: sum(x['TOTAL CH4 PUMPED (e3m3)']))
         df2 = df2.reset_index()
 
-        df2 = df2.drop(['Proppant Total Sum', 'Lateral Length'], axis=1)
+        df2 = df2.drop(['Lateral Length'], axis=1)
 
         self.feature_list = pd.merge(self.feature_list, df2, how="left", on=['Well Authorization Number'])
 
