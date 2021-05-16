@@ -1,0 +1,3 @@
+[console_scripts]
+glowingwaffle = glowingwaffle.__main__:main
+
