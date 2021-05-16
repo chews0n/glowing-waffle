@@ -1,0 +1,29 @@
+TODO LIST:
+
+1. Read in the IP90/IP180 for the training data
+2. Split the wells into training and test sets
+
+Harrison
+3. We need to train the model, most of that code can be recycled from the assignment (probably)
+4. Visualize some of the stats from the training and save it for the user
+
+Pierce
+5. Obtain the results by running prediction on the input data after the model has been trained.
+- Use the assignment that we did and build off of that with more generic variable names and functions
+
+Brendan
+6. We need to visualize the results -> assume that the results will come in a dataframe from the training and predicting stuff
+
+
+7. Done?
+
+Parallel Coding:
+
+- Create dummy data of the same type to be able to test what you're doing.
+
+- write my functions first, get an overall layout of what's going on, keeping in mind the datatypes you will have to deal with
+    - For example, most of the data will be in numpy arrays, so keep that in mind when creating your charts/plots/tables/value returns
+    - Use your function as sort of a black box that takes in something and returns something
+
+    IP90 (O/W/G) as well as IP 180 (O/W/G) and you want to return those values or a table of those values, your function is the middle man that does the transformation
+
