@@ -321,9 +321,13 @@ class ScrapeOGC:
         print("Determining Fluid Pumped (m3)")
         df2['Total Fluid Pumped (m3)'] = group.apply(lambda x: sum(x['TOTAL FLUID PUMPED (m3)']))
 
-        rint("Determining Fluid Per Metre")
+        print("Determining Fluid Per Metre")
         df2['Fluid per m'] = df2['Total Fluid Pumped (m3)'] / df2['Lateral Length']
         df2['Fluid per m'] = df2['Fluid per m'].round(2)
+
+        print("Determining Tonnage Per fluid m3")
+        df2['Tonnage per m3'] = df2['Proppant Total Sum']/df2['Total Fluid Pumped (m3)']
+        df2['Tonnage per m3'] = df2['Fluid per m'].round(2)
 
         print("Determining CO2 Pumped (m3)")
         df2['Total CO2 Pumped (m3)'] = group.apply(lambda x: sum(x['TOTAL CO2 PUMPED (m3)']))
