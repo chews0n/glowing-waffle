@@ -7,6 +7,7 @@ import zipfile36 as zipfile
 from glowingwaffle.data import ReadData
 import pandas as pd
 from itertools import chain
+import numpy as np
 
 
 # TODO: Extend this also to the AER, maybe??
@@ -221,6 +222,8 @@ class ScrapeOGC:
 
         self.feature_list = pd.DataFrame(self.wa_num, columns=['Well Authorization Number'])
 
+        
+        
     def read_well_data(self, file_name=None):
         """
 
@@ -248,44 +251,62 @@ class ScrapeOGC:
             filtered_df = filtered_df.rename(columns={wa_col: "Well Authorization Number"})
 
             self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])
-
+    
     def calc_well_design(self):
 
+         """
+         Funtion to calcuate well design features from feature_list
+         Features are then added to feature_list
+
+        """
+        #create dataframe on cluster level from fields of interest in feature list
         dfCluster = self.features_list['Well Authorization Number',
                                        'PERF STAGE NUM',
                                        'INTERVAL TOP DEPTH (m)',
-                                       'INTERVAL BASE DEPTH (m)',
-                                       'Formtn_code',
+                                       'INTERVAL BASE DEPTH (m)', 
+                                       'Formtn_code', 
                                        'Tvd_formtn_top_depth ',
                                        'Compltn_top_depth',
                                        'Compltn_base_depth',]
+        #create dataframes on stage and well level
         dfStage = pd.DataFrame()
         dfWell = pd.DataFrame()
 
+        #Agg Cluster values to calculate number of clusters in a stage
         dfStage = dfCluster.groupby(['Well Authorization Number','PERF STAGE NUM']).agg({'INTERVAL TOP DEPTH (m)':'count'})
         dfStage.rename(columns = {'INTERVAL TOP DEPTH (m)':'Cluster Count'}, inplace =True)
-
-        dfWell = dfCluster.groupby('Well Authorization Number').agg({'INTERVAL BASE DEPTH (m)':np.max,
+        #Agg cluste values to determine max and min depths and total stages
+        dfWell = dfCluster.groupby('Well Authorization Number').agg({'INTERVAL BASE DEPTH (m)':np.max, 
                                           'INTERVAL TOP DEPTH (m)':np.min,
                                           'PERF STAGE NUM':'nunique'})
-        dfWell.rename(columns = {'INTERVAL BASE DEPTH (m)':'Well Length',
+        dfWell.rename(columns = {'INTERVAL BASE DEPTH (m)':'Well Length', 
                          'INTERVAL TOP DEPTH (m)': 'Heel Perf Depth',
                           'PERF STAGE NUM': 'Number of Stages'}, inplace = True)
+        #Calculate completed length from the max and min clusters
         dfWell['Completed Length'] = dfWell['Well Length']-dfWell['Heel Perf Depth']
-
-
+        
+        
         dfCluster['Stage Length'] =  dfCluster['Compltn_base_depth'] - dfCluster['Compltn_top_depth']
+
+        #Merge in stage calc to cluster dataframe
         dfCluster = pd.merge(dfCluster, dfStage,
                              on = ['Well Authorizatoin Number','PERF STAGE NUM'],
                              how = 'left')
+        #Calc cluster spacing based on stage length and number of clusters
         dfCluster['Cluster Spacing'] = dfCluster['Stage Length']/(dfCluster['Cluster Count']-1)
+
+        #Agg clusters to well level and take in median to avoid outliers and merge to well value
         dfClusterPivot = dfCluster.pivot_table(index = ['Well Authorization Number'],
                                    values = ['Stage Length','Cluster Spacing','Cluster Count'],
                                    aggfunc = np.median)
         dfWell = pd.merge(dfWell, dfClusterPivot, on = 'Well Authorization Number')
 
+        #Find wells as single point entry and adjust cluser spacing to be stage spacing
         dfWell.loc[(dfWell['Cluster Count'] < 2), 'Cluster Spacing'] = dfWell['Completed Length']/dfWell['Number of Stages']
+
+        #Drop heel perf depth
         dfWell = dfWell.drop(['Heel Perf Depth'])
+        #Merge well dataframe to feature list
         self.feature_list = pd.merge(self.feature_list, dfWell,
                                      on = 'Well Authorization Number',
                                      how = 'left')
