@@ -252,9 +252,9 @@ class ScrapeOGC:
     
     def calc_well_design(self):
         
-         """
-         Funtion to calcuate well design features from feature_list
-         Features are then added to feature_list
+        """
+        Funtion to calcuate well design features from feature_list
+        Features are then added to feature_list
          
         """
         #create dataframe on cluster level from fields of interest in feature list        
