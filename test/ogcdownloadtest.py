@@ -12,12 +12,19 @@ AREA_CODE = [6200, 9022, 9021]
 
 FORMATION_CODE = [4990, 4995, 4997, 5000, 4000]
 
-FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"], 
-             'dst.csv':["Dst_num", "Top_intrvl_depth (m)", "Base_intrvl_depth (m)", "Init_shutin_press", "Final_shutin_press", "Misrun_flag", "Skin", "Permblty", "Run_temp (c)"],
-             'pst_dtl.csv': ["Run_depth_temp (C)", "Run_depth_press (kPa)", "Datum_press (kPa)", "Run_depth (m)"],
-             'pay_zone.csv': ["Oil porsty", "Gas porsty", "Oil water satrtn", "Gas water satrtn", "Tvd oil net pay size", "Tvd gas net pay size"],
-             'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"],
-             }
+FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"],
+             "perf.csv": ['PERF STAGE NUM', 'CHARGE TYPE', 'CHARGE SIZE (g)', 'SHOTS PER METER', 'DEGREE OF PHASING',
+                          'PERF COMMENTS'],
+             'hydraulic_fracture.csv': ['COMPLTN TOP DEPTH (m)', 'COMPLTN BASE DEPTH (m)', 'FRAC STAGE NUM',
+                                        'VISCOSITY GEL TYPE', 'ENERGIZER', 'ENERGIZER TYPE', 'AVG RATE (m3/min)',
+                                        'AVG TREATING PRESSURE (MPa)', 'FRAC GRADIENT (KPa/m)','TOTAL FLUID PUMPED (m3)'
+                                        ,'TOTAL CO2 PUMPED (m3)', 'TOTAL N2 PUMPED (scm)','TOTAL CH4 PUMPED (e3m3)',
+                                        'PROPPANT TYPE1','PROPPANT TYPE1 PLACED (t)','PROPPANT TYPE2',
+                                        'PROPPANT TYPE2 PLACED (t)', 'PROPPANT TYPE3','PROPPANT TYPE3 PLACED (t)',
+                                        'PROPPANT TYPE4','PROPPANT TYPE4 PLACED (t)'],
+             'compl_ev.csv':["Compltn_top_depth", "Compltn_base_depth", "Formtn_code"],
+             'form_top.csv':["Formtn_code", "Tvd_formtn_top_depth "],
+             'perf_net_interval.csv':["PERF STAGE NUM", "INTERVAL TOP DEPTH (m)", "INTERVAL BASE DEPTH (m)"]}
 
 if __name__ == "__main__":
     # Download the files from the OGC website
@@ -34,9 +41,17 @@ if __name__ == "__main__":
     ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
     ogcData.read_well_data(file_name=FILE_DICT)
-    
-    df = ogcData.feature_list
-    
-    df.to_csv("feature_list.csv")
+
+    ogcData.determine_frac_type()
+
+    ogcData.fill_feature_list_nan_with_val(columns=['PROPPANT TYPE1 PLACED (t)', 'PROPPANT TYPE2 PLACED (t)',
+                                                    'PROPPANT TYPE3 PLACED (t)', 'PROPPANT TYPE4 PLACED (t)'], val=0)
+
+    ogcData.calc_frac_props()
+
+    ogcData.fill_feature_list_nan_with_val(columns=['Total CO2 Pumped (m3)', 'Total N2 Pumped (scm)',
+                                                    'Total CH4 Pumped (e3m3)'], val=0)
+
+    ogcData.remove_columns()
 
     print(f"we found {len(ogcData.wa_num)} well names")
