@@ -24,7 +24,12 @@ FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"],
                                         'PROPPANT TYPE4','PROPPANT TYPE4 PLACED (t)'],
              'compl_ev.csv':["Compltn_top_depth", "Compltn_base_depth", "Formtn_code"],
              'form_top.csv':["Formtn_code", "Tvd_formtn_top_depth "],
-             'perf_net_interval.csv':["PERF STAGE NUM", "INTERVAL TOP DEPTH (m)", "INTERVAL BASE DEPTH (m)"]}
+             'perf_net_interval.csv':["PERF STAGE NUM", "INTERVAL TOP DEPTH (m)", "INTERVAL BASE DEPTH (m)"],
+             'dst.csv':["Dst_num", "Top_intrvl_depth (m)", "Base_intrvl_depth (m)", "Init_shutin_press", "Final_shutin_press", "Misrun_flag", "Skin", "Permblty", "Run_temp (c)"],
+             'pst_dtl.csv': ["Run_depth_temp (C)", "Run_depth_press (kPa)", "Datum_press (kPa)", "Run_depth (m)"],
+             'pay_zone.csv': ["Oil porsty", "Gas porsty", "Oil water satrtn", "Gas water satrtn", "Tvd oil net pay size", "Tvd gas net pay size"],
+             'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"],
+             }
 
 if __name__ == "__main__":
     # Download the files from the OGC website
@@ -51,7 +56,7 @@ if __name__ == "__main__":
 
     ogcData.fill_feature_list_nan_with_val(columns=['Total CO2 Pumped (m3)', 'Total N2 Pumped (scm)',
                                                     'Total CH4 Pumped (e3m3)'], val=0)
-
+    
     ogcData.remove_columns()
 
     print(f"we found {len(ogcData.wa_num)} well names")
