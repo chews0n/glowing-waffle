@@ -30,7 +30,10 @@ FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"],
              'pst_dtl.csv': ["Run_depth_temp (C)", "Run_depth_press (kPa)", "Datum_press (kPa)", "Run_depth (m)"], # might be multiple
              'pay_zone.csv': ["Oil porsty", "Gas porsty", "Oil water satrtn", "Gas water satrtn",
                               "Tvd oil net pay size", "Tvd gas net pay size"],
-             'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"]} #multiple WA
+             'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"],#multiple WA
+             'zone_prd_2007_to_2015.csv': ["Prod_period", "Oil_prod_vol (m3)"],#multiple WA
+             'zone_prd_2016_to_present.csv': ["Prod_period", "Oil_prod_vol (m3)"],#multiple WA
+             'BC Total Production.csv': ["Zone Prod Period", "Oil Production (m3)"]}#multiple WA
 
 if __name__ == "__main__":
     # Download the files from the OGC website
@@ -48,7 +51,7 @@ if __name__ == "__main__":
 
     ogcData.read_well_data(file_name=FILE_DICT)
 
-    ogcData.calc_well_design()
+    #ogcData.calc_well_design()
 
     ogcData.determine_frac_type()
 

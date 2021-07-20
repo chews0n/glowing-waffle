@@ -25,7 +25,7 @@ class ScrapeOGC:
         self.removal_list = list()
         self.multiple_wells = list()
         self.multiple_names = list()
-        self.multiple_list = ['compl_ev.csv', 'dst.csv', 'pst_dtl.csv', 'dst_rate.csv', 'perf_net_interval.csv']
+        self.multiple_list = ['compl_ev.csv', 'dst.csv', 'pst_dtl.csv', 'dst_rate.csv', 'perf_net_interval.csv', 'zone_prd_2016_to_present.csv', 'zone_prd_2007_to_2015.csv', 'BC Total Production.csv']
 
         if folder is not None and not os.path.exists(folder):
             # create a folder if the folder does not currently exist

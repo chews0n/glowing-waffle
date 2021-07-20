@@ -7,7 +7,6 @@ This project is an undertaking for the 2021 SPE Calgary Data Science Mentorship 
 - Harrison Wood - Pason
 - Pierce Anderson - ARC Resources
 - Brendan Danyluik - CalFrac Well Services
-- Thomas Moore - Crescent Point Energy
 
 The goal of this project was to create model that accurately predicts production values from Montney Basin wells, given a certain fracture design.
 
