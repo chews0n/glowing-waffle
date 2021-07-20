@@ -1,4 +1,4 @@
-from sklearn.preprocessing import train_test_split
+from sklearn.model_selection import train_test_split
 from catboost import CatBoostRegressor, Pool
 from sklearn.metrics import r2_score, mean_absolute_error
 import matplotlib.pyplot as plt
