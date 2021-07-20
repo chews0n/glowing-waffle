@@ -9,7 +9,7 @@ import pandas as pd
 from itertools import chain
 import numpy as np
 
-
+pd.set_option('mode.chained_assignment', None)
 # TODO: Extend this also to the AER, maybe??
 
 class ScrapeOGC:
@@ -257,6 +257,19 @@ class ScrapeOGC:
                 self.multiple_wells.append(filtered_df)
                 self.multiple_names.append(key)
             else:
+                if key == 'hydraulic_fracture.csv':
+                    filtered_df['FRAC STAGE NUM'].replace("DFIT", 0, inplace =True)
+                    filtered_df['FRAC STAGE NUM'].replace("Dfit", 0, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("9b", 9, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("9B", 9, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("9A", 9, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("9a", 9, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("8A", 8, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("7A", 7, inplace=True)
+                    filtered_df['FRAC STAGE NUM'].replace("1b", 1, inplace=True)
+
+
+
                 self.feature_list = pd.merge(self.feature_list, filtered_df, how="left",
                                              on=['Well Authorization Number'])
     
@@ -445,7 +458,19 @@ class ScrapeOGC:
         """
 
         for column in columns:
-            self.feature_list[column] = self.feature_list[column].fillna(value=0, inplace=True)
+            self.feature_list[column].replace(np.nan, val, inplace=True)
+
+    def convert_string_inputs_to_none(self, string_list):
+
+        for column in string_list:
+
+            self.feature_list[column].replace(np.nan, 'NONE', inplace=True)
+            list_of_strings = self.feature_list[column].to_list()
+            cleaned_list = list(set(list_of_strings))
+
+            for idx, newvals in enumerate(cleaned_list):
+                self.feature_list[column].replace(newvals, idx, inplace=True)
+
 
     def remove_columns(self):
         """
@@ -601,10 +626,16 @@ class ScrapeOGC:
                     if headername in first_heads:
                         df[headername][df_idx] = tmp_well_df[headername][tmp_well_df_first_idx]
                     elif headername in min_heads:
-                        df[headername][df_idx] = tmp_well_df[headername].min()
+                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='corce')
+                        tmp_well_df[headername].replace(np.nan, 0.0, inplace=True)
+                        df[headername][df_idx] = tmp_well_df.mode(numeric_only=True)[headername].min()
                     elif headername in max_heads:
-                        df[headername][df_idx] = tmp_well_df[headername].max()
+                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='corce')
+                        tmp_well_df[headername].replace(np.nan, 0.0, inplace=True)
+                        df[headername][df_idx] = tmp_well_df.mode(numeric_only=True)[headername].max()
                     elif headername in average_heads:
-                        df[headername][df_idx] = tmp_well_df[headername].mean()
+                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='corce')
+                        tmp_well_df[headername].replace(np.nan, 0.0, inplace=True)
+                        df[headername][df_idx] = tmp_well_df.mode(numeric_only=True)[headername].mean()
 
         self.feature_list = df

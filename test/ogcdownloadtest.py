@@ -2,6 +2,7 @@ from glowingwaffle.data import ScrapeOGC
 from glowingwaffle.training import RandomForestModel
 import sys
 import os
+import pandas as pd
 
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
             'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
@@ -71,8 +72,20 @@ INPUT_HEADERS = ['Well Authorization Number',
                 'Average Treating Pressure',
                 'Average Injection Rate',
                 'FRAC GRADIENT (KPa/m)_y',
-                'Tonnage per m',
-                'Fluid per m']
+                'Fluid per m',
+                'Tonnage per m3']
+
+STRING_INPUTS = ['CHARGE TYPE',
+                'VISCOSITY GEL TYPE',
+                'ENERGIZER',
+                'ENERGIZER TYPE',
+                'PROPPANT TYPE1',
+                'PROPPANT TYPE2',
+                'PROPPANT TYPE3',
+                'PROPPANT TYPE4',
+                'FRAC TYPE',
+                'Energizer',
+                'Energizer Type']
 
 if __name__ == "__main__":
     # Download the files from the OGC website
@@ -82,34 +95,56 @@ if __name__ == "__main__":
     except:
         output_folder = os.getcwd()
 
+    try:
+        featurelistcsv = sys.argv[2]
+    except:
+        featurelistcsv = None
+
     ogcData = ScrapeOGC(folder=output_folder, urls=OGC_URLS)
 
-    ogcData.download_data_url(file_names=FILE_DICT)
+    if (featurelistcsv is not None and os.path.isfile(featurelistcsv)):
+        ogcData.feature_list = pd.read_csv(featurelistcsv)
+        ogcData.feature_list = ogcData.feature_list.iloc[:, 1:]
 
-    ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
+    else:
 
-    ogcData.read_well_data(file_name=FILE_DICT)
+        ogcData.download_data_url(file_names=FILE_DICT)
 
-    ogcData.calc_ip90_ip180()
+        ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
-    #ogcData.calc_well_design()
+        ogcData.read_well_data(file_name=FILE_DICT)
 
-    ogcData.determine_frac_type()
+        ogcData.calc_ip90_ip180()
 
-    ogcData.fill_feature_list_nan_with_val(columns=['PROPPANT TYPE1 PLACED (t)', 'PROPPANT TYPE2 PLACED (t)',
-                                                    'PROPPANT TYPE3 PLACED (t)', 'PROPPANT TYPE4 PLACED (t)'], val=0)
+        #ogcData.calc_well_design()
 
-    ogcData.calc_frac_props()
+        ogcData.determine_frac_type()
 
-    ogcData.fill_feature_list_nan_with_val(columns=['Total CO2 Pumped (m3)', 'Total N2 Pumped (scm)',
-                                                    'Total CH4 Pumped (e3m3)'], val=0)
+        ogcData.fill_feature_list_nan_with_val(columns=['PROPPANT TYPE1 PLACED (t)', 'PROPPANT TYPE2 PLACED (t)',
+                                                        'PROPPANT TYPE3 PLACED (t)', 'PROPPANT TYPE4 PLACED (t)'],
+                                               val=0)
+        ogcData.calc_frac_props()
 
-    ogcData.remove_wells()
+        ogcData.fill_feature_list_nan_with_val(columns=['Total CO2 Pumped (m3)', 'Total N2 Pumped (scm)',
+                                                        'Total CH4 Pumped (e3m3)'], val=0)
 
-    ogcData.create_cleaned_feature_list()
+        ogcData.remove_wells()
 
-    #ogcData.remove_columns()
+        ogcData.create_cleaned_feature_list()
 
-    ogcData.print_feature_list_to_csv()
+        #ogcData.remove_columns()
 
-    print(f"we found {len(ogcData.wa_num)} well names")
+        ogcData.print_feature_list_to_csv()
+
+    ogcData.convert_string_inputs_to_none(STRING_INPUTS)
+
+    ogcData.fill_feature_list_nan_with_val(columns=INPUT_HEADERS, val=0)
+
+    ogcModel = RandomForestModel(df=ogcData.feature_list)
+
+    ogcModel.split_data()
+
+    ogcModel.train_model()
+
+    ogcModel.model_statistics()
+
