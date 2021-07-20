@@ -347,6 +347,17 @@ class ScrapeOGC:
         self.feature_list.loc[self.feature_list['FRAC TYPE'].isnull(), "FRAC TYPE"] = 'Plug and Perf'
 
         self.removal_list.append('PERF COMMENTS')
+        self.removal_list.append('TOTAL CO2 PUMPED (m3)')
+        self.removal_list.append('TOTAL N2 PUMPED (scm)')
+        self.removal_list.append('TOTAL CH4 PUMPED (e3m3)')
+        self.removal_list.append('Proppant Total Sum')
+        self.removal_list.append('PERF STAGE NUM')
+        self.removal_list.append('TOTAL FLUID PUMPED (m3)')
+        self.removal_list.append('PROPPANT TYPE1 PLACED (t)')
+        self.removal_list.append('PROPPANT TYPE2 PLACED (t)')
+        self.removal_list.append('PROPPANT TYPE3 PLACED (t)')
+        self.removal_list.append('PROPPANT TYPE4 PLACED (t)')
+
 
     def calc_frac_props(self):
         """
@@ -453,6 +464,9 @@ class ScrapeOGC:
         for column in self.removal_list:
             self.feature_list = self.feature_list.drop([column], axis=1)
 
+        non_null_columns = [col for col in self.feature_list.columns if self.feature_list.loc[:, col].notna().any()]
+        self.feature_list = self.feature_list[non_null_columns]
+
     def remove_wells(self):
         self.feature_list = self.feature_list[~self.feature_list['Well Authorization Number'].isin(self.removal_wells)]
 
@@ -525,3 +539,72 @@ class ScrapeOGC:
 
         # merge into the main feature list
         self.feature_list = pd.merge(self.feature_list, df2, how="left", on=['Well Authorization Number'])
+
+    def create_cleaned_feature_list(self):
+        first_heads = ['Well Authorization Number',
+                       'Surf Nad83 Lat',
+                       'Surf Nad83 Long',
+                       'CHARGE TYPE',
+                       'VISCOSITY GEL TYPE',
+                       'ENERGIZER',
+                       'ENERGIZER TYPE',
+                       'PROPPANT TYPE1',
+                       'PROPPANT TYPE2',
+                       'PROPPANT TYPE3',
+                       'PROPPANT TYPE4',
+                       'FRAC TYPE',
+                       'Energizer',
+                       'Energizer Type']
+
+        min_heads = ['COMPLTN TOP DEPTH (m)']
+
+        max_heads = [
+            'COMPLTN BASE DEPTH (m)',
+            'FRAC STAGE NUM',
+            'IP90',
+            'IP180',
+            'Total Fluid Pumped (m3)']
+
+        average_heads = ['CHARGE SIZE (g)',
+                         'SHOTS PER METER',
+                         'DEGREE OF PHASING',
+                         'AVG RATE (m3/min)',
+                         'AVG TREATING PRESSURE (MPa)',
+                         'FRAC GRADIENT (KPa/m)_x',
+                         'Oil porsty',
+                         'Gas porsty',
+                         'Oil water satrtn',
+                         'Gas water satrtn',
+                         'Tvd oil net pay size',
+                         'Tvd gas net pay size',
+                         'Average Treating Pressure',
+                         'Average Injection Rate',
+                         'FRAC GRADIENT (KPa/m)_y',
+                         'Fluid per m',
+                         'Tonnage per m3']
+
+
+
+        all_headers = first_heads + min_heads + max_heads + average_heads
+        df = pd.DataFrame(columns=all_headers)
+
+        for well_num in self.wa_num:
+
+            if well_num not in self.removal_wells:
+                df = df.append({'Well Authorization Number':well_num}, ignore_index=True)
+                df_idx = len(df) - 1
+                tmp_well_df = self.feature_list[self.feature_list['Well Authorization Number'] == well_num]
+                tmp_well_df.is_copy = None
+                for headername in all_headers:
+                    tmp_well_df_first_idx = int(tmp_well_df.index[0])
+
+                    if headername in first_heads:
+                        df[headername][df_idx] = tmp_well_df[headername][tmp_well_df_first_idx]
+                    elif headername in min_heads:
+                        df[headername][df_idx] = tmp_well_df[headername].min()
+                    elif headername in max_heads:
+                        df[headername][df_idx] = tmp_well_df[headername].max()
+                    elif headername in average_heads:
+                        df[headername][df_idx] = tmp_well_df[headername].mean()
+
+        self.feature_list = df

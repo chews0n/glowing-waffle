@@ -36,6 +36,44 @@ FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"],
              'zone_prd_2016_to_present.csv': ["Prod_period", "Oil_prod_vol (m3)", "Gas_prod_vol (e3m3)", "Cond_prod_vol (m3)"],#multiple WA
              'BC Total Production.csv': ["Zone Prod Period", "Oil Production (m3)", "Gas Production (e3m3)", "Condensate Production (m3)"]}#multiple WA
 
+INPUT_HEADERS = ['Well Authorization Number',
+                'Surf Nad83 Lat',
+                'Surf Nad83 Long',
+                'CHARGE TYPE',
+                'VISCOSITY GEL TYPE',
+                'ENERGIZER',
+                'ENERGIZER TYPE',
+                'PROPPANT TYPE1',
+                'PROPPANT TYPE2',
+                'PROPPANT TYPE3',
+                'PROPPANT TYPE4',
+                'FRAC TYPE',
+                'Energizer',
+                'Energizer Type',
+                'COMPLTN TOP DEPTH (m)',
+                'COMPLTN BASE DEPTH (m)',
+                'FRAC STAGE NUM',
+                'IP90',
+                'IP180',
+                'Total Fluid Pumped (m3)',
+                'CHARGE SIZE (g)',
+                'SHOTS PER METER',
+                'DEGREE OF PHASING',
+                'AVG RATE (m3/min)',
+                'AVG TREATING PRESSURE (MPa)',
+                'FRAC GRADIENT (KPa/m)_x',
+                'Oil porsty',
+                'Gas porsty',
+                'Oil water satrtn',
+                'Gas water satrtn',
+                'Tvd oil net pay size',
+                'Tvd gas net pay size',
+                'Average Treating Pressure',
+                'Average Injection Rate',
+                'FRAC GRADIENT (KPa/m)_y',
+                'Tonnage per m',
+                'Fluid per m']
+
 if __name__ == "__main__":
     # Download the files from the OGC website
     output_folder = None
@@ -66,8 +104,12 @@ if __name__ == "__main__":
     ogcData.fill_feature_list_nan_with_val(columns=['Total CO2 Pumped (m3)', 'Total N2 Pumped (scm)',
                                                     'Total CH4 Pumped (e3m3)'], val=0)
 
-    ogcData.remove_columns()
-
     ogcData.remove_wells()
+
+    ogcData.create_cleaned_feature_list()
+
+    #ogcData.remove_columns()
+
+    ogcData.print_feature_list_to_csv()
 
     print(f"we found {len(ogcData.wa_num)} well names")
