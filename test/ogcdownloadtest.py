@@ -1,4 +1,5 @@
 from glowingwaffle.data import ScrapeOGC
+from glowingwaffle.training import RandomForestModel
 import sys
 import os
 
