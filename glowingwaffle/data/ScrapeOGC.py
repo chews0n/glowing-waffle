@@ -626,15 +626,15 @@ class ScrapeOGC:
                     if headername in first_heads:
                         df[headername][df_idx] = tmp_well_df[headername][tmp_well_df_first_idx]
                     elif headername in min_heads:
-                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='corce')
+                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='coerce')
                         tmp_well_df[headername].replace(np.nan, 0.0, inplace=True)
                         df[headername][df_idx] = tmp_well_df.mode(numeric_only=True)[headername].min()
                     elif headername in max_heads:
-                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='corce')
+                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='coerce')
                         tmp_well_df[headername].replace(np.nan, 0.0, inplace=True)
                         df[headername][df_idx] = tmp_well_df.mode(numeric_only=True)[headername].max()
                     elif headername in average_heads:
-                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='corce')
+                        tmp_well_df[headername] = pd.to_numeric(tmp_well_df[headername], errors='coerce')
                         tmp_well_df[headername].replace(np.nan, 0.0, inplace=True)
                         df[headername][df_idx] = tmp_well_df.mode(numeric_only=True)[headername].mean()
 
