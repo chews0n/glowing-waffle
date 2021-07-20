@@ -38,11 +38,6 @@ def parse_arguments():
                                      description='A Machine Learning Based Predictor for fracture design optimization '
                                                  'for use with the Montney Formation.')
 
-    # add arguments to the parser
-    parser.add_argument("--downloadOGC", type=str2bool, nargs='?', dest='download_ogc',
-                        const=True, default=False,
-                        help="Download the OGC Data")
-
     parser.add_argument("--train", type=str2bool, nargs='?', dest='train',
                         const=True, default=False,
                         help="Run Retraining of the model.")

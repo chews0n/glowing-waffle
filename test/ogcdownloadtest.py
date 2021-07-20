@@ -32,9 +32,9 @@ FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"],
              'pay_zone.csv': ["Oil porsty", "Gas porsty", "Oil water satrtn", "Gas water satrtn",
                               "Tvd oil net pay size", "Tvd gas net pay size"],
              'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"],#multiple WA
-             'zone_prd_2007_to_2015.csv': ["Prod_period", "Oil_prod_vol (m3)"],#multiple WA
-             'zone_prd_2016_to_present.csv': ["Prod_period", "Oil_prod_vol (m3)"],#multiple WA
-             'BC Total Production.csv': ["Zone Prod Period", "Oil Production (m3)"]}#multiple WA
+             'zone_prd_2007_to_2015.csv': ["Prod_period", "Oil_prod_vol (m3)", "Gas_prod_vol (e3m3)", "Cond_prod_vol (m3)"],#multiple WA
+             'zone_prd_2016_to_present.csv': ["Prod_period", "Oil_prod_vol (m3)", "Gas_prod_vol (e3m3)", "Cond_prod_vol (m3)"],#multiple WA
+             'BC Total Production.csv': ["Zone Prod Period", "Oil Production (m3)", "Gas Production (e3m3)", "Condensate Production (m3)"]}#multiple WA
 
 if __name__ == "__main__":
     # Download the files from the OGC website
@@ -52,6 +52,8 @@ if __name__ == "__main__":
 
     ogcData.read_well_data(file_name=FILE_DICT)
 
+    ogcData.calc_ip90_ip180()
+
     #ogcData.calc_well_design()
 
     ogcData.determine_frac_type()
@@ -65,5 +67,7 @@ if __name__ == "__main__":
                                                     'Total CH4 Pumped (e3m3)'], val=0)
 
     ogcData.remove_columns()
+
+    ogcData.remove_wells()
 
     print(f"we found {len(ogcData.wa_num)} well names")

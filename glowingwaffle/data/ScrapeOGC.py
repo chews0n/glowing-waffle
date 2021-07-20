@@ -23,6 +23,7 @@ class ScrapeOGC:
         self.dataframes_dict = {}
         self.feature_list = None
         self.removal_list = list()
+        self.removal_wells = list()
         self.multiple_wells = list()
         self.multiple_names = list()
         self.multiple_list = ['compl_ev.csv', 'dst.csv', 'pst_dtl.csv', 'dst_rate.csv', 'perf_net_interval.csv', 'zone_prd_2016_to_present.csv', 'zone_prd_2007_to_2015.csv', 'BC Total Production.csv']
@@ -452,7 +453,10 @@ class ScrapeOGC:
         for column in self.removal_list:
             self.feature_list = self.feature_list.drop([column], axis=1)
 
+    def remove_wells(self):
+        self.feature_list = self.feature_list[~self.feature_list['Well Authorization Number'].isin(self.removal_wells)]
 
+    def print_feature_list_to_csv(self):
         self.feature_list.to_csv("feature_list.csv")
 
     def aggregate_multiple_wells(self):
@@ -466,3 +470,58 @@ class ScrapeOGC:
             else:
                 pass
 
+    def calc_ip90_ip180(self):
+
+        # loop over the three well production files to determine the ip90 and ip180 for each well
+
+        df2 = pd.DataFrame(columns=['Well Authorization Number', 'IP90', 'IP180'])
+        for idx, df in enumerate(self.multiple_list):
+            if self.multiple_names[idx] =='zone_prd_2007_to_2015.csv':
+                combined_df = self.multiple_wells[idx]
+            elif self.multiple_names[idx] == 'zone_prd_2016_to_present.csv':
+                combined_df.append(self.multiple_wells[idx])
+            elif self.multiple_names[idx] == 'BC Total Production.csv':
+                # rename the total production columns
+                tmp_rename = self.multiple_wells[idx].rename(columns={"Zone Prod Period": "Prod_period", "Oil Production (m3)": "Oil_prod_vol (m3)", "Gas Production (e3m3)": "Gas_prod_vol (e3m3)", "Condensate Production (m3)": "Cond_prod_vol (m3)"})
+                combined_df.append(tmp_rename)
+
+        # convert and sum condensate, oil and gas prod
+        combined_df['boe'] = combined_df['Oil_prod_vol (m3)'] + combined_df['Gas_prod_vol (e3m3)'] + combined_df['Cond_prod_vol (m3)']
+
+        for well_num in self.wa_num:
+            well_df = combined_df.loc[combined_df['Well Authorization Number'] == well_num]
+
+            well_df.sort_values(by=["Prod_period"])
+            data = []
+            data.append([well_num, 0.0, 0.0])
+            df_ip = pd.DataFrame(data, columns=['Well Authorization Number', 'IP90', 'IP180'])
+
+            # assume that each period is one month
+            if (len(well_df) < 6):
+                # not enough production data to use for ip90/ip180
+                self.removal_wells.append(well_num)
+            else:
+                iptotal = well_df['boe'].sum()
+
+                if (iptotal < 0.0001):
+                    # this is not an oil well
+                    self.removal_wells.append(well_num)
+                else:
+
+                    ip90 = well_df.head(3)['boe'].sum()
+                    startindex = 0
+
+                    if (ip90 < 0.0001):
+                        # this well probably started on a different date, keep looking
+                        for index, row in well_df.iterrows():
+                            if (row['boe'] > 0.0001):
+                                startindex = index
+                                break
+
+                    df_ip['IP90'] = well_df.head(3 + startindex)['boe'].sum()
+                    df_ip['IP180'] = well_df.head(6 + startindex)['boe'].sum()
+
+            df2 = df2.append(df_ip)
+
+        # merge into the main feature list
+        self.feature_list = pd.merge(self.feature_list, df2, how="left", on=['Well Authorization Number'])
