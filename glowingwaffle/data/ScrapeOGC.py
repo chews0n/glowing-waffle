@@ -167,8 +167,7 @@ class ScrapeOGC:
                     break
 
             if column == "":
-                sys.exit(
-                    f'Error Occurred, could not find a well authorization header in: {file_name}, please check the file')
+                sys.exit(f'Error Occurred, could not find a well authorization header in: {file_name}, please check the file')
 
         df = self.dataframes_dict[file_name].loc[self.dataframes_dict[file_name][column].isin(list_of_values)]
 
