@@ -23,6 +23,9 @@ class ScrapeOGC:
         self.dataframes_dict = {}
         self.feature_list = None
         self.removal_list = list()
+        self.multiple_wells = list()
+        self.multiple_names = list()
+        self.multiple_list = ['compl_ev.csv', 'dst.csv', 'pst_dtl.csv', 'dst_rate.csv', 'perf_net_interval.csv']
 
         if folder is not None and not os.path.exists(folder):
             # create a folder if the folder does not currently exist
@@ -250,38 +253,41 @@ class ScrapeOGC:
             # rename WA Num to Well Authorization Number to match the other data frame with all of the wells
             filtered_df = filtered_df.rename(columns={wa_col: "Well Authorization Number"})
 
-            try:
-                self.feature_list = pd.merge(self.feature_list, filtered_df, how="left", on=['Well Authorization Number'])
-            except:
-                self.calc_well_design()
+            if key in self.multiple_list:
+                self.multiple_wells.append(filtered_df)
+                self.multiple_names.append(key)
+            else:
+                self.feature_list = pd.merge(self.feature_list, filtered_df, how="left",
+                                             on=['Well Authorization Number'])
     
-    def calc_well_design(self):
+    def calc_well_design(self, multiple_loc=-1):
 
         """
-        Funtion to calcuate well design features from feature_list
+        Function to calculate well design features from feature_list
         Features are then added to feature_list
 
         """
         #create dataframe on cluster level from fields of interest in feature list
 
-        dfCluster = self.feature_list['Well Authorization Number',
-                               'PERF STAGE NUM',
-                               'INTERVAL TOP DEPTH (m)',
-                               'INTERVAL BASE DEPTH (m)',
-                               'Formtn_code',
-                               'Tvd_formtn_top_depth ',
-                               'Compltn_top_depth',
-                               'Compltn_base_depth',]
+        # dfCluster = self.feature_list['Well Authorization Number',
+        #                        'PERF STAGE NUM',
+        #                        'INTERVAL TOP DEPTH (m)',
+        #                        'INTERVAL BASE DEPTH (m)',
+        #                        'Formtn_code',
+        #                        'Tvd_formtn_top_depth ',
+        #                        'Compltn_top_depth',
+        #                        'Compltn_base_depth',]
 
         #create dataframes on stage and well level
         dfStage = pd.DataFrame()
         dfWell = pd.DataFrame()
+        dfCluster = pd.DataFrame()
 
         #Agg Cluster values to calculate number of clusters in a stage
-        dfStage = dfCluster.groupby(['Well Authorization Number','PERF STAGE NUM']).agg({'INTERVAL TOP DEPTH (m)':'count'})
+        dfStage = self.multiple_wells[multiple_loc].groupby(['Well Authorization Number','PERF STAGE NUM']).agg({'INTERVAL TOP DEPTH (m)':'count'})
         dfStage.rename(columns = {'INTERVAL TOP DEPTH (m)':'Cluster Count'}, inplace =True)
         #Agg cluste values to determine max and min depths and total stages
-        dfWell = dfCluster.groupby('Well Authorization Number').agg({'INTERVAL BASE DEPTH (m)':np.max,
+        dfWell = self.multiple_wells[multiple_loc].groupby('Well Authorization Number').agg({'INTERVAL BASE DEPTH (m)':np.max,
                                   'INTERVAL TOP DEPTH (m)':np.min,
                                   'PERF STAGE NUM':'nunique'})
         dfWell.rename(columns = {'INTERVAL BASE DEPTH (m)':'Well Length',
@@ -291,11 +297,11 @@ class ScrapeOGC:
         dfWell['Completed Length'] = dfWell['Well Length']-dfWell['Heel Perf Depth']
 
 
-        dfCluster['Stage Length'] =  dfCluster['Compltn_base_depth'] - dfCluster['Compltn_top_depth']
+        dfCluster['Stage Length'] =  self.feature_list['Compltn_base_depth'] - self.feature_list['Compltn_top_depth']
 
         #Merge in stage calc to cluster dataframe
         dfCluster = pd.merge(dfCluster, dfStage,
-                     on = ['Well Authorizatoin Number','PERF STAGE NUM'],
+                     on = ['Well Authorization Number','PERF STAGE NUM'],
                      how = 'left')
         #Calc cluster spacing based on stage length and number of clusters
         dfCluster['Cluster Spacing'] = dfCluster['Stage Length']/(dfCluster['Cluster Count']-1)
@@ -449,3 +455,15 @@ class ScrapeOGC:
 
 
         self.feature_list.to_csv("feature_list.csv")
+
+    def aggregate_multiple_wells(self):
+
+        for idx, df in enumerate(self.multiple_list):
+            # aggregate the values in the well list, this has to be different for each of the files though for
+            # the averaging technique
+
+            if self.multiple_names[idx] == "perf_net_interval.csv":
+                self.calc_well_design(idx)
+            else:
+                pass
+

@@ -22,15 +22,15 @@ FILE_DICT = {'wells.csv': ["Surf Nad83 Lat", "Surf Nad83 Long"],
                                         'PROPPANT TYPE1','PROPPANT TYPE1 PLACED (t)','PROPPANT TYPE2',
                                         'PROPPANT TYPE2 PLACED (t)', 'PROPPANT TYPE3','PROPPANT TYPE3 PLACED (t)',
                                         'PROPPANT TYPE4','PROPPANT TYPE4 PLACED (t)'],
-             'compl_ev.csv':["Compltn_top_depth", "Compltn_base_depth", "Formtn_code"],
-             'form_top.csv':["Formtn_code", "Tvd_formtn_top_depth "],
-             'perf_net_interval.csv':["PERF STAGE NUM", "INTERVAL TOP DEPTH (m)", "INTERVAL BASE DEPTH (m)"],
+             'compl_ev.csv':["Compltn_top_depth", "Compltn_base_depth", "Formtn_code"], # multiple WA
+             'form_top.csv':["Formtn_code", "Tvd_formtn_top_depth "], # multiple WA
+             'perf_net_interval.csv':["PERF STAGE NUM", "INTERVAL TOP DEPTH (m)", "INTERVAL BASE DEPTH (m)"], #multiple WA
              'dst.csv': ["Dst_num", "Top_intrvl_depth (m)", "Base_intrvl_depth (m)", "Init_shutin_press",
-                         "Final_shutin_press", "Misrun_flag", "Skin", "Permblty", "Run_temp (c)"],
-             'pst_dtl.csv': ["Run_depth_temp (C)", "Run_depth_press (kPa)", "Datum_press (kPa)", "Run_depth (m)"],
+                         "Final_shutin_press", "Misrun_flag", "Skin", "Permblty", "Run_temp (c)"], # multiple WA, filter out misruns
+             'pst_dtl.csv': ["Run_depth_temp (C)", "Run_depth_press (kPa)", "Datum_press (kPa)", "Run_depth (m)"], # might be multiple
              'pay_zone.csv': ["Oil porsty", "Gas porsty", "Oil water satrtn", "Gas water satrtn",
                               "Tvd oil net pay size", "Tvd gas net pay size"],
-             'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"]}
+             'dst_rate.csv': ["Dst_num", "Flowing_fluid_type", "Init_fluid_rate", "Avg_fluid_rate", "Final_fluid_rate"]} #multiple WA
 
 if __name__ == "__main__":
     # Download the files from the OGC website
@@ -47,6 +47,8 @@ if __name__ == "__main__":
     ogcData.find_well_names(area_code=AREA_CODE, formation_code=FORMATION_CODE)
 
     ogcData.read_well_data(file_name=FILE_DICT)
+
+    ogcData.calc_well_design()
 
     ogcData.determine_frac_type()
 
