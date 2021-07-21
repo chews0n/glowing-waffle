@@ -32,7 +32,14 @@ To install the package, run the setup.py file, python 3.5 and above is required
     python setup.py install
 
 ## Usage
-Short blurb on how to use the software and expected outputs.
+glowing-waffle can be used as a python package or as a standalone executable. The executable requires certain inputs in order to run that have default values.
+
+Once installed, glowing-waffle can be used as a stand alone executable, the following command will display the usage of the standalone:
+```shell script
+glowing-waffle -h
+```
+Additionally, it should be noted that the input file required to predict IP90/IP180 for a particular well should follow the same format as the [template](templates/input_values_template.csv) within this repository. Please note that a lot of text based inputs require numbers to map to the enums, this template should be made more user friendly in the future.
+
 
 ## Model
 Using a random forest model implemented in the CatBoost library, we will gather the necessary features and targets from public petroleum data sources for the Montney (using SQL/REST calls). 
