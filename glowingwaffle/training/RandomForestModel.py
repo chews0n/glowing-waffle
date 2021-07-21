@@ -126,7 +126,6 @@ class RandomForestModel:
         plt.bar(plot_labels, feature_importances)
         plt.xticks(rotation='vertical')
         plt.savefig('Feature_Importanceip90.png', dpi=300)
-        plt.show()
         plt.clf()
 
         feature_importances = self.modelip90.get_feature_importance(self.trainpoolip180)
@@ -135,7 +134,6 @@ class RandomForestModel:
         plt.bar(plot_labels, feature_importances)
         plt.xticks(rotation='vertical')
         plt.savefig('Feature_Importanceip180.png', dpi=300)
-        plt.show()
         plt.clf()
 
 

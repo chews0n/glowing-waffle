@@ -140,27 +140,33 @@ if __name__ == "__main__":
 
     ogcData.fill_feature_list_nan_with_val(columns=INPUT_HEADERS, val=0)
 
-    ogcModel = RandomForestModel(df=ogcData.feature_list)
+    ensemble_pred = list()
 
-    ogcModel.split_data()
+    for ens_iter in range(0, 10):
 
-    ogcModel.train_model()
+        ogcModel = RandomForestModel(df=ogcData.feature_list)
 
-    ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
+        ogcModel.split_data()
 
-    ogcModel.feature_importance()
+        ogcModel.train_model()
 
-    # use the input value(s) to predict the outputs
-    if len(sys.argv) > 3:
-        if (os.path.isfile(sys.argv[3])):
-            inputcsv = pd.read_csv(sys.argv[3])
-            inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
-            wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
-            predicted_vals = [0.0, 0.0]
-            predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+        ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
 
-            print("predicted IP90: {} \n".format(predicted_vals[0]))
+        ogcModel.feature_importance()
 
-            print("predicted IP180: {} \n".format(predicted_vals[1]))
+        # use the input value(s) to predict the outputs
+        if len(sys.argv) > 3:
+            if (os.path.isfile(sys.argv[3])):
+                inputcsv = pd.read_csv(sys.argv[3])
+                inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
+                wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
+                predicted_vals = [0.0, 0.0]
+                predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+
+                print("predicted IP90 iter#{}: {} \n".format(ens_iter, predicted_vals[0]))
+
+                print("predicted IP180 iter#{}: {} \n".format(ens_iter, predicted_vals[1]))
+
+                ensemble_pred.append(predicted_vals)
 
 

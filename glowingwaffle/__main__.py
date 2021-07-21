@@ -132,6 +132,11 @@ def parse_arguments():
     parser.add_argument("--feature-file", type=argparse.FileType('r'), nargs='?', default='feature_list.csv', dest='feature_file',
                         help="CSV file containing the feature list and values used to train the model.")
 
+    parser.add_argument("--number-of-iterations", type=int, nargs='?', default=5,
+                        dest='numiters',
+                        help="Number of iterations to create a model and get results from it")
+
+
     # parse the arguments
     args = parser.parse_args()
     return args
@@ -186,30 +191,35 @@ def main():
 
     ogcData.fill_feature_list_nan_with_val(columns=INPUT_HEADERS, val=0)
 
-    ogcModel = RandomForestModel(df=ogcData.feature_list)
+    ensemble_pred = list()
 
-    ogcModel.split_data()
+    for ens_iter in range (0, args.numiters):
+        ogcModel = RandomForestModel(df=ogcData.feature_list)
 
-    print("Training the model...\n")
+        ogcModel.split_data()
 
-    ogcModel.train_model()
+        print("Training the model...\n")
 
-    print("Model Evaluation...\n")
+        ogcModel.train_model()
 
-    ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
+        print("Model Evaluation...\n")
 
-    ogcModel.feature_importance()
+        ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
 
-    # use the input value(s) to predict the outputs
-    inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
-    wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
-    
-    predicted_vals = [0.0, 0.0]
-    predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+        ogcModel.feature_importance()
 
-    print("predicted IP90: {} \n".format(predicted_vals[0]))
+        # use the input value(s) to predict the outputs
+        inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
+        wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
 
-    print("predicted IP180: {} \n".format(predicted_vals[1]))
+        predicted_vals = [0.0, 0.0]
+        predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+
+        print("predicted IP90 iter#{}: {} \n".format(ens_iter, predicted_vals[0]))
+
+        print("predicted IP180 iter#{}: {} \n".format(ens_iter, predicted_vals[1]))
+
+        ensemble_pred.append(predicted_vals)
 
 
 
