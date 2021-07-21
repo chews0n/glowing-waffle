@@ -120,10 +120,10 @@ def parse_arguments():
     parser.add_argument("--output-folder", type=dir_path, nargs='?', default=os.getcwd(), dest='output_folder',
                         help="Folder to save the OGC data csv files to or read them in from if they have already been downloaded")
 
-    parser.add_argument("--input-file", type=dir_path, nargs='?', default=os.path.join(os.getcwd(), 'input.csv'), dest='input_file',
+    parser.add_argument("--input-file", type=str, nargs='?', default='input.csv', dest='input_file',
                         help="Input file for the input to the model predictor.")
 
-    parser.add_argument("--feature-file", type=dir_path, nargs='?', default=os.path.join(os.getcwd(), 'feature_list.csv'), dest='feature_file',
+    parser.add_argument("--feature-file", type=str, nargs='?', default='feature_list.csv', dest='feature_file',
                         help="CSV file containing the feature list and values used to train the model.")
 
     parser.add_argument("--number-of-iterations", type=int, nargs='?', default=5,
