@@ -9,65 +9,132 @@ class RandomForestModel:
 
     def __init__(self, df=None):
         # put the class variables here
-        self.model = None
+        self.modelip90 = None
+        self.modelip180 = None
         self.df = df
         self.feature_list = self.df.drop(['IP90', 'IP180', 'Well Authorization Number'], axis=1)
-        self.target_list = self.df.filter(['IP90', 'IP180'], axis=1)
+        self.target_listip90 = self.df.filter(['IP90'], axis=1)
+        self.target_listip180 = self.df.filter(['IP180'], axis=1)
         self.well_list = self.df.filter(['Well Authorization Number'], axis=1)
-        self.x_train = None
-        self.x_test = None
-        self.y_train = None
-        self.y_test = None
-        self.y_pred = None
-        self.sc_x = None
-        self.sc_y = None
+        self.x_trainip90 = None
+        self.x_testip90 = None
+        self.y_trainip90 = None
+        self.y_testip90 = None
+        self.y_predip90 = None
+        self.sc_xip90 = None
+        self.sc_yip90 = None
+        self.y_trainip180 = None
+        self.y_testip180 = None
+        self.y_predip180 = None
+        self.sc_yip180 = None
+        self.sc_xip180 = None
+        self.x_trainip180 = None
+        self.x_testip180 = None
+        self.trainpoolip90 = None
+        self.trainpoolip180 = None
            
       
     def split_data(self):
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.feature_list,
-                                                            self.target_list, test_size = 0.2,
+        self.x_trainip90, self.x_testip90, self.y_trainip90, self.y_testip90 = train_test_split(self.feature_list,
+                                                            self.target_listip90, test_size = 0.2,
                                                             random_state = 1)
+
+        self.x_trainip180, self.x_testip180, self.y_trainip180, self.y_testip180 = train_test_split(self.feature_list,
+                                                                                        self.target_listip180,
+                                                                                        test_size=0.2,
+                                                                                        random_state=1)
 
     def train_model(self):
         # Train the model with CatBoost Regressor
 
-        self.sc_x = StandardScaler()
-        self.sc_y = StandardScaler()
+        self.sc_xip90 = StandardScaler()
+        self.sc_yip90 = StandardScaler()
 
-        self.model = CatBoostRegressor(iterations=500, learning_rate=0.1,
+        self.sc_xip180 = StandardScaler()
+        self.sc_yip180 = StandardScaler()
+
+        self.x_trainip90 = self.sc_xip90.fit_transform(self.x_trainip90)
+        self.y_trainip90 = self.sc_yip90.fit_transform(self.y_trainip90)
+
+        self.x_trainip180 = self.sc_xip180.fit_transform(self.x_trainip180)
+        self.y_trainip180 = self.sc_yip180.fit_transform(self.y_trainip180)
+
+        self.modelip90 = CatBoostRegressor(iterations=500, learning_rate=0.1,
                                       logging_level='Silent', random_seed=0)
-        train_pool = Pool(self.x_train, self.y_train)
-        self.model.fit(train_pool, eval_set=(self.x_test, self.y_test))
+        self.modelip180 = CatBoostRegressor(iterations=500, learning_rate=0.1,
+                                           logging_level='Silent', random_seed=0)
+        self.trainpoolip90 = Pool(self.x_trainip90, self.y_trainip90)
+        self.modelip90.fit(self.trainpoolip90, eval_set=(self.x_testip90, self.y_testip90))
+
+        self.trainpoolip180 = Pool(self.x_trainip180, self.y_trainip180)
+        self.modelip180.fit(self.trainpoolip180, eval_set=(self.x_testip180, self.y_testip180))
 
     def predict_initial_production(self):
         # Pass in the inputs that you want to use to predict IP90/IP180
-        self.y_pred = self.sc_y.inverse_transform(self.model.predict(self.sc_x.transform(self.x_test)))
+        self.y_predip90 = self.sc_yip90.inverse_transform(self.modelip90.predict(self.sc_xip90.transform(self.x_testip90)))
+        self.y_predip180 = self.sc_yip180.inverse_transform(self.modelip180.predict(self.sc_xip180.transform(self.x_testip180)))
    
     def model_statistics(self):
         
-        # establish baseline error from the y and x test (only checking IP90 for now)
-        x_col = self.x_test.columns
-        baseline_pred = self.x_test[:, x_col.index('IP90')]
-        baseline_error = abs(baseline_pred - self.y_test)
-        print('Average baseline error: ', round(np.mean(baseline_error), 2)) 
-        
-        error = mean_absolute_error(self.y_test, self.y_pred)
-        print('Accuracy:', round(error, 2))
-        r2 = r2_score(self.y_test, self.y_pred)
-        print('R2:', round(r2, 2))
+        error = mean_absolute_error(self.y_testip90, self.y_predip90)
+        print('IP90 Accuracy:', round(error, 2))
+        r2 = r2_score(self.y_testip90, self.y_predip90)
+        print('IP90 R2:', round(r2, 2))
 
         # Calculate mean absolute percentage error (MAPE)
-        mape = 100 * (abs(self.y_pred - self.y_test)/ self.y_test)
+        mape = 100 * (abs(self.y_predip90 - self.y_testip90)/ self.y_testip90)
         accuracy = 100 - np.mean(mape)
-        print('Accuracy:', round(accuracy, 2), '%.')
+        print('IP90 Accuracy:', round(accuracy, 2), '%.')
 
-    def feature_importance(self, train_pool=None):
-        x_col = self.x_train.columns
-        feature_importances = self.model.get_feature_importance(train_pool)
+        error = mean_absolute_error(self.y_testip180, self.y_predip180)
+        print('IP180 Accuracy:', round(error, 2))
+        r2 = r2_score(self.y_testip180, self.y_predip180)
+        print('IP180 R2:', round(r2, 2))
+
+        # Calculate mean absolute percentage error (MAPE)
+        mape = 100 * (abs(self.y_predip180 - self.y_testip180) / self.y_testip180)
+        accuracy = 100 - np.mean(mape)
+        print('IP180 Accuracy:', round(accuracy, 2), '%.')
+
+    def feature_importance(self):
+        x_col = self.feature_list.columns
+        feature_importances = self.modelip90.get_feature_importance(self.trainpoolip90)
+        plot_labels = ['LAT',             'LONG',
+                 'CHARGE',          'GEL',
+                   'ENERGIZER',              'ENERGIZERT',
+              'PROP1',              'PROP2',
+              'PROP3',              'PROP4',
+                   'FRACT',                   'Energizer',
+              'EnergizerT',       'TOP',
+      'BASE',              'FRACNUM',
+     'CUMFLUID',             'CHARGESIZE',
+             'SHOTSPM',           'PHASING',
+           'RATE', 'PRESS',
+     'FGRADX',                  'PORO',
+                  'GPORO',            'Oil water satrtn',
+            'SAT',        'NETPAY',
+        'PAYGAS',   'TreatPRESS',
+      'INJRATE',     'FGRADY',
+                 'FLUIDPM',              'TONPM']
         for score, name in sorted(zip(feature_importances, x_col), reverse=True):
             print('{}: {}'.format(name, score))
-        feature_importances.plot(kind='bar');
-        plt.savefig('Feature_Importance.png', dpi=300, bbox_inches='tight')
+
+        #for idx, val in enumerate(feature_importances)
+        plt.bar(plot_labels, feature_importances)
+        plt.xticks(rotation='vertical')
+        plt.savefig('Feature_Importanceip90.png', dpi=300)
+        plt.show()
+        plt.clf()
+
+        feature_importances = self.modelip90.get_feature_importance(self.trainpoolip180)
+        for score, name in sorted(zip(feature_importances, x_col), reverse=True):
+            print('{}: {}'.format(name, score))
+        plt.bar(plot_labels, feature_importances)
+        plt.xticks(rotation='vertical')
+        plt.savefig('Feature_Importanceip180.png', dpi=300)
+        plt.show()
+        plt.clf()
+
 
 
 

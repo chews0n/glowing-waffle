@@ -146,5 +146,9 @@ if __name__ == "__main__":
 
     ogcModel.train_model()
 
-    ogcModel.model_statistics()
+    ogcModel.predict_initial_production()
+
+    ogcModel.feature_importance()
+
+    ogcModel.feature_importance()
 
