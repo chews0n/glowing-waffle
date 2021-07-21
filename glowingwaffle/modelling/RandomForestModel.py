@@ -128,7 +128,7 @@ class RandomForestModel:
         plt.savefig('Feature_Importanceip90_iter_{}.png'.format(iternum), dpi=300)
         plt.clf()
 
-        feature_importances = self.modelip90.get_feature_importance(self.trainpoolip180)
+        feature_importances = self.modelip180.get_feature_importance(self.trainpoolip180)
         for score, name in sorted(zip(feature_importances, x_col), reverse=True):
             print('{}: {}'.format(name, score))
         plt.bar(plot_labels, feature_importances)
