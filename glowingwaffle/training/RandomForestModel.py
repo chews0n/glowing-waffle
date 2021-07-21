@@ -70,10 +70,12 @@ class RandomForestModel:
         self.trainpoolip180 = Pool(self.x_trainip180, self.y_trainip180)
         self.modelip180.fit(self.trainpoolip180, eval_set=(self.x_testip180, self.y_testip180))
 
-    def predict_initial_production(self):
+    def predict_initial_production(self, xip90, xip180):
         # Pass in the inputs that you want to use to predict IP90/IP180
-        self.y_predip90 = self.sc_yip90.inverse_transform(self.modelip90.predict(self.sc_xip90.transform(self.x_testip90)))
-        self.y_predip180 = self.sc_yip180.inverse_transform(self.modelip180.predict(self.sc_xip180.transform(self.x_testip180)))
+        y_predip90 = self.sc_yip90.inverse_transform(self.modelip90.predict(self.sc_xip90.transform(xip90)))
+        y_predip180 = self.sc_yip180.inverse_transform(self.modelip180.predict(self.sc_xip180.transform(xip180)))
+
+        return y_predip90, y_predip180
    
     def model_statistics(self):
         

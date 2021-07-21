@@ -141,7 +141,7 @@ def main():
     args = parse_arguments()
 
     ogc_data = ScrapeOGC(folder=args.output_folder, urls=OGC_URLS)
-
+    inputcsv = pd.read_csv(args.feature_file)
     # Download the OGC data from the OGC website
 
     ogc_data.download_data_url(file_names=FILE_DICT, force_download=args.download_ogc)
@@ -190,9 +190,27 @@ def main():
 
     ogcModel.split_data()
 
+    print("Training the model...\n")
+
     ogcModel.train_model()
 
-    ogcModel.model_statistics()
+    print("Model Evaluation...\n")
+
+    ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
+
+    ogcModel.feature_importance()
+
+    # use the input value(s) to predict the outputs
+    inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
+    wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
+    
+    predicted_vals = [0.0, 0.0]
+    predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+
+    print("predicted IP90: {} \n".format(predicted_vals[0]))
+
+    print("predicted IP180: {} \n".format(predicted_vals[1]))
+
 
 
 if __name__ == "__main__":

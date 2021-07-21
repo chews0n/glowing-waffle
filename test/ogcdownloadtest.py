@@ -146,9 +146,21 @@ if __name__ == "__main__":
 
     ogcModel.train_model()
 
-    ogcModel.predict_initial_production()
+    ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
 
     ogcModel.feature_importance()
 
-    ogcModel.feature_importance()
+    # use the input value(s) to predict the outputs
+    if len(sys.argv) > 3:
+        if (os.path.isfile(sys.argv[3])):
+            inputcsv = pd.read_csv(sys.argv[3])
+            inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
+            wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
+            predicted_vals = [0.0, 0.0]
+            predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+
+            print("predicted IP90: {} \n".format(predicted_vals[0]))
+
+            print("predicted IP180: {} \n".format(predicted_vals[1]))
+
 
