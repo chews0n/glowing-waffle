@@ -3,6 +3,8 @@ from glowingwaffle.training import RandomForestModel
 import sys
 import os
 import pandas as pd
+import scipy.stats
+import numpy as np
 
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
             'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
@@ -86,6 +88,14 @@ STRING_INPUTS = ['CHARGE TYPE',
                 'FRAC TYPE',
                 'Energizer',
                 'Energizer Type']
+
+def mean_confidence_interval(data, confidence=0.95):
+    # https://stackoverflow.com/questions/15033511/compute-a-confidence-interval-from-sample-data
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), scipy.stats.sem(a)
+    h = se * scipy.stats.t.ppf((1 + confidence) / 2., n - 1)
+    return m, m - h, m + h
 
 if __name__ == "__main__":
     # Download the files from the OGC website

@@ -3,6 +3,8 @@ import os
 from glowingwaffle.data import ScrapeOGC
 from glowingwaffle.training import RandomForestModel
 import pandas as pd
+import scipy.stats
+import numpy as np
 
 OGC_URLS = ['https://reports.bcogc.ca/ogc/app001/r/ams_reports/bc_total_production?request=CSV_Y',
             'https://reports.bcogc.ca/ogc/app001/r/ams_reports/2?request=CSV_N',
@@ -141,12 +143,23 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
+def mean_confidence_interval(data, confidence=0.95):
+    # https://stackoverflow.com/questions/15033511/compute-a-confidence-interval-from-sample-data
+
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), scipy.stats.sem(a)
+    h = se * scipy.stats.t.ppf((1 + confidence) / 2., n - 1)
+    return m, m - h, m + h
+
 
 def main():
     args = parse_arguments()
 
     ogc_data = ScrapeOGC(folder=args.output_folder, urls=OGC_URLS)
     inputcsv = pd.read_csv(args.feature_file)
+
+    confidence_interval = 95
     # Download the OGC data from the OGC website
 
     ogc_data.download_data_url(file_names=FILE_DICT, force_download=args.download_ogc)
@@ -191,7 +204,8 @@ def main():
 
     ogcData.fill_feature_list_nan_with_val(columns=INPUT_HEADERS, val=0)
 
-    ensemble_pred = list()
+    ensemble_pred_ip90 = list()
+    ensemble_pred_ip180 = list()
 
     for ens_iter in range (0, args.numiters):
         ogcModel = RandomForestModel(df=ogcData.feature_list)
@@ -219,7 +233,21 @@ def main():
 
         print("predicted IP180 iter#{}: {} \n".format(ens_iter, predicted_vals[1]))
 
-        ensemble_pred.append(predicted_vals)
+        ensemble_pred_ip90.append(predicted_vals[0])
+        ensemble_pred_ip180.append(predicted_vals[1])
+
+    mean90, low90, high90 = mean_confidence_interval(ensemble_pred_ip90, confidence_interval = confidence_interval/100)
+    mean180, low180, high180 = mean_confidence_interval(ensemble_pred_ip180, confidence_interval = confidence_interval/100)
+
+    print("For a Confidence Interval of {} the mean and high and low values are as follows: \n".format(confidence_interval))
+    print("IP90: \n")
+    print("High: {} \n".format(high90))
+    print("Mean: {} \n".format(mean90))
+    print("Low: {} \n".format(low90))
+    print("IP180: \n")
+    print("High: {} \n".format(high180))
+    print("Mean: {} \n".format(mean180))
+    print("Low: {} \n".format(low180))
 
 
 
