@@ -153,7 +153,18 @@ def main():
     args = parse_arguments()
 
     ogc_data = ScrapeOGC(folder=args.output_folder, urls=OGC_URLS)
-    inputcsv = pd.read_csv(args.feature_file)
+
+    prediction = True
+
+    # use the input value(s) to predict the outputs
+    if (os.path.isfile(args.input_file)):
+        inputcsv = pd.read_csv(args.input_file)
+        inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
+        wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
+    else:
+        print("the input file {} could not be found \n".format(args.input_file))
+        print("Prediction module will not proceed")
+        prediction = False
 
     # Download the OGC data from the OGC website
 
@@ -202,7 +213,7 @@ def main():
     ensemble_pred_ip90 = list()
     ensemble_pred_ip180 = list()
 
-    for ens_iter in range (0, args.numiters):
+    if not prediction:
         ogcModel = RandomForestModel(df=ogcData.feature_list)
 
         ogcModel.split_data()
@@ -213,36 +224,49 @@ def main():
 
         print("Model Evaluation...\n")
 
-        ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
+        ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90,
+                                                                                        ogcModel.x_testip180)
 
-        ogcModel.feature_importance(ens_iter)
+        ogcModel.feature_importance(0)
+    else:
 
-        # use the input value(s) to predict the outputs
-        inputcsv = inputcsv.drop(['Well Authorization Number'], axis=1)
-        wellnames = inputcsv.filter(['Well Authorization Number'], axis=1)
+        for ens_iter in range (0, args.numiters):
+            ogcModel = RandomForestModel(df=ogcData.feature_list)
 
-        predicted_vals = [0.0, 0.0]
-        predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+            ogcModel.split_data()
 
-        print("predicted IP90 iter#{}: {} \n".format(ens_iter, predicted_vals[0]))
+            print("Training the model...\n")
 
-        print("predicted IP180 iter#{}: {} \n".format(ens_iter, predicted_vals[1]))
+            ogcModel.train_model()
 
-        ensemble_pred_ip90.append(predicted_vals[0])
-        ensemble_pred_ip180.append(predicted_vals[1])
+            print("Model Evaluation...\n")
 
-    mean90, low90, high90 = mean_confidence_interval(ensemble_pred_ip90, confidence=(args.confidence_interval/100))
-    mean180, low180, high180 = mean_confidence_interval(ensemble_pred_ip180, confidence=(args.confidence_interval/100))
+            ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
 
-    print("For a Confidence Interval of {} the mean and high and low values are as follows: \n".format(args.confidence_interval))
-    print("IP90: \n")
-    print("High: {} \n".format(high90))
-    print("Mean: {} \n".format(mean90))
-    print("Low: {} \n".format(low90))
-    print("IP180: \n")
-    print("High: {} \n".format(high180))
-    print("Mean: {} \n".format(mean180))
-    print("Low: {} \n".format(low180))
+            ogcModel.feature_importance(ens_iter)
+
+            predicted_vals = [0.0, 0.0]
+            predicted_vals[0], predicted_vals[1] = ogcModel.predict_initial_production(inputcsv, inputcsv)
+
+            print("predicted IP90 iter#{}: {} \n".format(ens_iter, predicted_vals[0]))
+
+            print("predicted IP180 iter#{}: {} \n".format(ens_iter, predicted_vals[1]))
+
+            ensemble_pred_ip90.append(predicted_vals[0])
+            ensemble_pred_ip180.append(predicted_vals[1])
+
+        mean90, low90, high90 = mean_confidence_interval(ensemble_pred_ip90, confidence=(args.confidence_interval/100))
+        mean180, low180, high180 = mean_confidence_interval(ensemble_pred_ip180, confidence=(args.confidence_interval/100))
+
+        print("For a Confidence Interval of {} the mean and high and low values are as follows: \n".format(args.confidence_interval))
+        print("IP90: \n")
+        print("High: {} \n".format(high90))
+        print("Mean: {} \n".format(mean90))
+        print("Low: {} \n".format(low90))
+        print("IP180: \n")
+        print("High: {} \n".format(high180))
+        print("Mean: {} \n".format(mean180))
+        print("Low: {} \n".format(low180))
 
 
 
