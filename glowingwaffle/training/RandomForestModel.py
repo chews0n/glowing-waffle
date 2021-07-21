@@ -4,6 +4,7 @@ from sklearn.metrics import r2_score, mean_absolute_error
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import random
 
 class RandomForestModel:
 
@@ -59,10 +60,10 @@ class RandomForestModel:
         self.x_trainip180 = self.sc_xip180.fit_transform(self.x_trainip180)
         self.y_trainip180 = self.sc_yip180.fit_transform(self.y_trainip180)
 
-        self.modelip90 = CatBoostRegressor(iterations=500, learning_rate=0.1,
-                                      logging_level='Silent', random_seed=0)
-        self.modelip180 = CatBoostRegressor(iterations=500, learning_rate=0.1,
-                                           logging_level='Silent', random_seed=0)
+        self.modelip90 = CatBoostRegressor(iterations=1000, learning_rate=0.01,
+                                      logging_level='Silent', random_seed=random.randint(0, 2500))
+        self.modelip180 = CatBoostRegressor(iterations=1000, learning_rate=0.01,
+                                           logging_level='Silent', random_seed=random.randint(0, 2500))
         self.trainpoolip90 = Pool(self.x_trainip90, self.y_trainip90)
         self.modelip90.fit(self.trainpoolip90, eval_set=(self.x_testip90, self.y_testip90))
 
