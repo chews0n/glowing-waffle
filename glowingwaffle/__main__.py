@@ -1,7 +1,7 @@
 import argparse
 import os
 from glowingwaffle.data import ScrapeOGC
-from glowingwaffle.training import RandomForestModel
+from glowingwaffle.modelling import RandomForestModel
 import pandas as pd
 import scipy.stats
 import numpy as np
