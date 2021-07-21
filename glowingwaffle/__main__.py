@@ -138,6 +138,10 @@ def parse_arguments():
                         dest='numiters',
                         help="Number of iterations to create a model and get results from it")
 
+    parser.add_argument("--confidence-interval", type=float, nargs='?', default=95,
+                        dest='confidence_interval',
+                        help="Confidence interval for the ensemble based evaluation of the model")
+
 
     # parse the arguments
     args = parser.parse_args()
@@ -159,7 +163,6 @@ def main():
     ogc_data = ScrapeOGC(folder=args.output_folder, urls=OGC_URLS)
     inputcsv = pd.read_csv(args.feature_file)
 
-    confidence_interval = 95
     # Download the OGC data from the OGC website
 
     ogc_data.download_data_url(file_names=FILE_DICT, force_download=args.download_ogc)
@@ -236,10 +239,10 @@ def main():
         ensemble_pred_ip90.append(predicted_vals[0])
         ensemble_pred_ip180.append(predicted_vals[1])
 
-    mean90, low90, high90 = mean_confidence_interval(ensemble_pred_ip90, confidence_interval = confidence_interval/100)
-    mean180, low180, high180 = mean_confidence_interval(ensemble_pred_ip180, confidence_interval = confidence_interval/100)
+    mean90, low90, high90 = mean_confidence_interval(ensemble_pred_ip90, confidence=(args.confidence_interval/100))
+    mean180, low180, high180 = mean_confidence_interval(ensemble_pred_ip180, confidence=(args.confidence_interval/100))
 
-    print("For a Confidence Interval of {} the mean and high and low values are as follows: \n".format(confidence_interval))
+    print("For a Confidence Interval of {} the mean and high and low values are as follows: \n".format(args.confidence_interval))
     print("IP90: \n")
     print("High: {} \n".format(high90))
     print("Mean: {} \n".format(mean90))

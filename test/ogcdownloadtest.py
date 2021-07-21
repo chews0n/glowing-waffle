@@ -99,6 +99,7 @@ def mean_confidence_interval(data, confidence=0.95):
 
 if __name__ == "__main__":
     # Download the files from the OGC website
+    confidence_interval = 95
     output_folder = None
     try:
         output_folder = sys.argv[1]
@@ -150,9 +151,10 @@ if __name__ == "__main__":
 
     ogcData.fill_feature_list_nan_with_val(columns=INPUT_HEADERS, val=0)
 
-    ensemble_pred = list()
+    ensemble_pred_ip90 = list()
+    ensemble_pred_ip180 = list()
 
-    for ens_iter in range(0, 10):
+    for ens_iter in range(0, 20):
 
         ogcModel = RandomForestModel(df=ogcData.feature_list)
 
@@ -177,6 +179,24 @@ if __name__ == "__main__":
 
                 print("predicted IP180 iter#{}: {} \n".format(ens_iter, predicted_vals[1]))
 
-                ensemble_pred.append(predicted_vals)
+                ensemble_pred_ip90.append(predicted_vals[0])
+                ensemble_pred_ip180.append(predicted_vals[1])
+
+    mean90, low90, high90 = mean_confidence_interval(ensemble_pred_ip90,
+                                                     confidence=(confidence_interval / 100))
+    mean180, low180, high180 = mean_confidence_interval(ensemble_pred_ip180,
+                                                        confidence=(confidence_interval / 100))
+
+    print("For a Confidence Interval of {} the mean and high and low values are as follows: \n".format(
+        confidence_interval))
+    print("IP90: \n")
+    print("High: {} \n".format(high90))
+    print("Mean: {} \n".format(mean90))
+    print("Low: {} \n".format(low90))
+    print("IP180: \n")
+    print("High: {} \n".format(high180))
+    print("Mean: {} \n".format(mean180))
+    print("Low: {} \n".format(low180))
+
 
 
