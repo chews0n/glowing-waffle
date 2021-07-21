@@ -113,17 +113,9 @@ def parse_arguments():
                                      description='A Machine Learning Based Predictor for fracture design optimization '
                                                  'for use with the Montney Formation.')
 
-    parser.add_argument("--train", type=str2bool, nargs='?', dest='train',
+    parser.add_argument("--download-ogc", type=str2bool, nargs='?', dest='download_ogc',
                         const=True, default=False,
-                        help="Run Retraining of the model.")
-
-    parser.add_argument("--predict", type=str2bool, nargs='?', dest='predict',
-                        const=True, default=True,
-                        help="Run the prediction mode. This is done after training if this was set to true.")
-
-    parser.add_argument("--model-folder", type=dir_path, nargs='?', default=os.getcwd(), dest='model_folder',
-                        help="Folder to either output the model (if training is set to true) or read the model if "
-                             "only running the predictor")
+                        help="Force Download the OGC data and rebuild the features list")
 
     parser.add_argument("--output-folder", type=dir_path, nargs='?', default=os.getcwd(), dest='output_folder',
                         help="Folder to save the OGC data csv files to or read them in from if they have already been downloaded")
@@ -169,7 +161,7 @@ def main():
 
     ogcData = ScrapeOGC(folder=args.output_folder, urls=OGC_URLS)
 
-    if (args.feature_file is not None and os.path.isfile(args.feature_file)):
+    if (args.feature_file is not None and os.path.isfile(args.feature_file) and args.download_ogc is False):
         ogcData.feature_list = pd.read_csv(args.feature_file)
         ogcData.feature_list = ogcData.feature_list.iloc[:, 1:]
 
