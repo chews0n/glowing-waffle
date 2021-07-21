@@ -36,7 +36,7 @@ glowing-waffle can be used as a python package or as a standalone executable. Th
 
 Once installed, glowing-waffle can be used as a stand alone executable, the following command will display the usage of the standalone:
 ```shell script
-glowing-waffle -h
+glowingwaffle -h
 ```
 Additionally, it should be noted that the input file required to predict IP90/IP180 for a particular well should follow the same format as the [template](templates/input_values_template.csv) within this repository. Please note that a lot of text based inputs require numbers to map to the enums, this template should be made more user friendly in the future.
 
