@@ -152,7 +152,7 @@ if __name__ == "__main__":
 
         ogcModel.y_predip90, ogcModel.y_predip180 = ogcModel.predict_initial_production(ogcModel.x_testip90, ogcModel.x_testip180)
 
-        ogcModel.feature_importance()
+        ogcModel.feature_importance(ens_iter)
 
         # use the input value(s) to predict the outputs
         if len(sys.argv) > 3:

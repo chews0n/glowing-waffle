@@ -99,7 +99,7 @@ class RandomForestModel:
         accuracy = 100 - np.mean(mape)
         print('IP180 Accuracy:', round(accuracy, 2), '%.')
 
-    def feature_importance(self):
+    def feature_importance(self, iternum):
         x_col = self.feature_list.columns
         feature_importances = self.modelip90.get_feature_importance(self.trainpoolip90)
         plot_labels = ['LAT',             'LONG',
@@ -125,7 +125,7 @@ class RandomForestModel:
         #for idx, val in enumerate(feature_importances)
         plt.bar(plot_labels, feature_importances)
         plt.xticks(rotation='vertical')
-        plt.savefig('Feature_Importanceip90.png', dpi=300)
+        plt.savefig('Feature_Importanceip90_iter_{}.png'.format(iternum), dpi=300)
         plt.clf()
 
         feature_importances = self.modelip90.get_feature_importance(self.trainpoolip180)
@@ -133,7 +133,7 @@ class RandomForestModel:
             print('{}: {}'.format(name, score))
         plt.bar(plot_labels, feature_importances)
         plt.xticks(rotation='vertical')
-        plt.savefig('Feature_Importanceip180.png', dpi=300)
+        plt.savefig('Feature_Importanceip180_iter_{}.png'.format(iternum), dpi=300)
         plt.clf()
 
 
